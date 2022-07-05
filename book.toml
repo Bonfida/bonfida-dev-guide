@@ -3,7 +3,7 @@ authors = ["ellttBen"]
 language = "en"
 multilingual = false
 src = "src"
-title = "The Bonfida Development Toolkit"
+title = "The Bonfida Development Guide"
 
 [build]
 build-dir = "output"
