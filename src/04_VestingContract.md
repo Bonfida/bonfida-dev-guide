@@ -28,6 +28,7 @@ pub struct VestingSchedule {
 ```
 
 In our freshly created project, let's start by renaming the `src/state/example_state_cast.rs` to `src/state/vesting_contract.rs`.
+We'll also delete the `src/state/example_state_borsh.rs` file.
 Hopefully our IDE will take care of the refactor.
 Let's then refactor the `ExampleStateCast` struct to `VestingContract` and paste in the above definitions.
 
