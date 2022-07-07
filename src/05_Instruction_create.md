@@ -102,23 +102,27 @@ Sometimes even auditors can get confused when these checks are not displayed obv
 
 ### Checks
 
-Let's go through these checks one by one and explain why they are all here. You won't need to necessarily think too deeply about these checks when writing your own programs : you should just ask yourself, how can I constrain these accounts as much as possible using the rudimentary `check_signer`, `check_account_owner` and `check_account_key` security primitives? The tougher the constraint, the smaller the attack surface.
+Let's go through these checks one by one and explain why they are all here. 
+You won't need to necessarily think too deeply about these checks when writing your own programs, you should just ask yourself: how can I constrain these accounts as much as possible using the rudimentary `check_signer`, `check_account_owner` and `check_account_key` security primitives? 
+As general rule of thumb, the tighter the constraint, the smaller the attack surface.
 
 ```rust,noplayground
 check_account_key(accounts.spl_token_program, &spl_token::ID)?;
 ```
-This check is essential. We'll be performing token transfers using this program and we need to be sure that we're actually calling the write program. An attacker could substitute their own program here and leverage the `source_tokens_owner` signature to take ownership of the token account!
+This check is essential. We'll be performing token transfers using this program and we need to be sure that we're actually calling the write program. 
+An attacker could substitute their own program here and leverage the `source_tokens_owner` signature to take ownership of the token account!
 
 ```rust,noplayground
 check_account_owner(accounts.vesting_contract, program_id)?;
 ```
-We're going to be editing the `vesting_contract` account data, and we need to be sure that _only our program_ can alter this data. The Solana runtime constraints ensure that every byte of a program-owned account's data is either :
+We're going to be editing the `vesting_contract` account data, and we need to be sure that _only our program_ can alter this data. 
+The Solana runtime constraints ensure that every byte of a program-owned account's data is either :
 - determined by the program's logic
 - freshly allocated and therefore 0
 This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
 Failing to perform this check will expose our programs to all sorts of potential attacks.
 
-In reality our program's logic should already make this check redundant since the `VestingContract::initialize` will either attempt to modify the account's data (which is only possible when it is owned by the current progrma), or just fail. 
+In reality our program's logic should already make this check redundant: the `VestingContract::initialize` method will either attempt to modify the account's data (which is only possible when it is owned by the current program), or just fail. 
 Does this mean we should remove this check? 
 _Absolutely not._ 
 Our program's logic might change in the future, and we don't want this metaphorical sword of Damocles to hang over our heads. 
@@ -134,7 +138,146 @@ and
 check_signer(accounts.source_tokens_owner)?;
 ```
 
-Technically unncessary since the call to `spl_token_program` will take care of these for us.
+Technically unnecessary since the call to `spl_token_program` will take care of these for us.
 Don't even _think_ about removing those.
 
 ## Parameters
+
+In addition to the above set of accounts, we need some extra information from the user in order to properly configure the vesting contract.
+We only have access to a user-provided slice of bytes, called the _instruction data_.
+This slice of bytes can be cast into a `Params` wrapper object.
+The approach will be very similar to the way we handled the `VestingContract` object in the previous section.
+
+Let's take a direct look at the `Params` struct :
+
+```rust,noplayground
+#[derive(WrappedPod)]
+pub struct Params<'a> {
+    // Needs to be a `u64` for the schedules slice to be well-aligned in memory
+    signer_nonce: &'a u64,
+    schedule: &'a [VestingSchedule]
+}
+```
+
+In order to handle Params being a wrapped Pod in our Rust instruction bindings, we need to activate the `instruction_params_wrapped` feature.
+In the program `Cargo.toml`, edit the bonfida-utils dependency to :
+```toml
+bonfida-utils = {version = 0.2, features = ["instruction_params_wrapped"]}
+```
+
+Then in `instruction.rs`, update the `create` binding to :
+
+```rust,noplayground
+#[allow(missing_docs)]
+pub fn create(accounts: create::Accounts<Pubkey>, params: create::Params) -> Instruction {
+    accounts.get_instruction_wrapped_pod(crate::ID, ProgramInstruction::Create as u8, params)
+}
+```
+
+In combination with the accounts defined above, we have all the information we need to begin writing the instruction logic!
+
+## Instruction Logic
+
+Our entry point into the instruction is always a function `process` with the following signature
+```rust,noplayground
+pub fn process(program_id: &Pubkey, accounts: &[AccountInfo], params: Params) -> ProgramResult {
+    ...
+}
+```
+
+The first step is to parse our Accounts struct using the `Accounts::parse` method we defined above.
+Remember that this method is also responsible for performing basic security checks.
+We then unwrap our `params` object into local variables for convenience.
+
+```rust,noplayground
+pub fn process(program_id: &Pubkey, accounts: &[AccountInfo], params: Params) -> ProgramResult {
+    let accounts = Accounts::parse(accounts, program_id)?;
+    let Params { signer_nonce, schedule } = params;
+}
+```
+
+The first item to take care of is the initialization of the `VestingContract` object.
+We can start by checking that the given account is of the correct size :
+
+```rust,noplayground
+let expected_vesting_contract_account_size = VestingContract::compute_allocation_size(schedule.len());
+
+    if accounts.vesting_contract.data_len() != expected_vesting_contract_account_size {
+        msg!("The vesting contract account is incorrectly sized for the supplied schedule!");
+        return Err(ProgramError::InvalidArgument)
+    }
+```
+
+A refinement to this program would involve taking care of the allocation ourselves, thus making sure that the supplied account will be of the correct size.
+However, as long as we supply our users with bindings which can take care of this allocation, this is not really an issue.
+Allocating an account within a program is only required when allocating Program-Derived Addresses (PDAs).
+As discused earlied, this is not a concern here.
+
+Once we have verified that the account is properly sized, we can actually initialized our `VestingContract` account, and then retrieve it!
+
+```rust,noplayground
+// This guard variable is the owned pointer to our actual data
+// Once it goes out of scope (or is dropped, all its dependent references are dropped)
+let mut vesting_contract_guard = accounts.vesting_contract.data.borrow_mut();
+
+VestingContract::initialize(&mut vesting_contract_guard)?;
+let vesting_contract = VestingContract::from_buffer(&mut vesting_contract_guard, state::Tag::VestingContract)?;
+```
+
+Now that our `VestingContract` object is properly initialized, we need to save the user-provided configuration.
+
+```rust,noplayground
+*vesting_contract.header = VestingContractHeader { 
+    owner: *accounts.recipient.key, 
+    vault: *accounts.vault.key,
+    current_schedule_index: 0,
+    signer_nonce: *signer_nonce as u8,
+    _padding: [0;7] 
+};
+
+let mut total_amount = 0u64;
+for (schedule, slot) in schedule.iter().zip(vesting_contract.schedules.iter_mut()) {
+    *slot = *schedule;
+    total_amount = total_amount.checked_add(schedule.quantity).unwrap();
+}
+```
+We keep track of the total amount as it represents what we'll have to transfer into our vault.
+Notice that we use `checked_add` to compute our sum.
+Using checked math is _absolutely essential_.
+Sometimes it might seem redundant.
+Sometimes it might actually be redundant.
+But I'll say the same thing here I said when we discussed account checks : _dont' even think about it!_
+
+The only exception to this rule is `checked_div` when dividing by a constant.
+If you know it to be non-zero because it says so on the same line of code, then you should favor readability.
+
+Finally, we transfer the funds to our vault using the `spl_token` `transfer` instruction :
+```rust,noplayground
+let instruction = spl_token::instruction::transfer(
+    &spl_token::ID, 
+    accounts.source_tokens.key, 
+    accounts.vault.key, 
+    accounts.source_tokens_owner.key, 
+    &[], 
+    total_amount
+)?;
+
+invoke(&instruction, &[
+    accounts.spl_token_program.clone(),
+    accounts.source_tokens.clone(),
+    accounts.vault.clone(),
+    accounts.source_tokens_owner.clone()
+])?;
+```
+
+Regarding the use of `invoke`, the best way to know what kind of accounts to provide is to :
+- first add the account for the program we're invoking
+- look at the binding code and add all the accounts in order
+
+### We're done... right?
+
+As it stands our program has a major vulnerability which enables a fraudulent vesting contract issuer to dupe their recipient.
+They can run away with the entirety of their funds?
+If you can't find this vulnerability on your own, that's completely normal and we'll discuss general practices to analyze your code.
+Try it anyways, and then let's fix it.
+
