@@ -213,11 +213,11 @@ However, as long as we supply our users with bindings which can take care of thi
 Allocating an account within a program is only required when allocating Program-Derived Addresses (PDAs).
 As discused earlied, this is not a concern here.
 
-Once we have verified that the account is properly sized, we can actually initialized our `VestingContract` account, and then retrieve it!
+Once we have verified that the account is properly sized, we can actually initialize our `VestingContract` account, and then retrieve it!
 
 ```rust,noplayground
 // This guard variable is the owned pointer to our actual data
-// Once it goes out of scope (or is dropped, all its dependent references are dropped)
+// Once it goes out of scope (or is dropped), all its dependent references are dropped
 let mut vesting_contract_guard = accounts.vesting_contract.data.borrow_mut();
 
 VestingContract::initialize(&mut vesting_contract_guard)?;
@@ -277,7 +277,6 @@ Regarding the use of `invoke`, the best way to know what kind of accounts to pro
 ### We're done... right?
 
 As it stands our program has a major vulnerability which enables a fraudulent vesting contract issuer to dupe their recipient.
-They can run away with the entirety of their funds?
+They can run away with the entirety of their funds!
 If you can't find this vulnerability on your own, that's completely normal and we'll discuss general practices to analyze your code.
 Try it anyways, and then let's fix it.
-
