@@ -15,7 +15,7 @@ In order to update the tool, just re-run the above command.
 
 ## Creating a new project
 
-To initialize a new project _my-project_ in the current directory, we use the following command :
+To initialize a new project _my-project_ in the current directory, we use the following command:
 
 ```
 bonfida autoproject my-project
@@ -82,7 +82,7 @@ program
 |   | 
 │   └── state.rs                     # Contains general utilities related to state 
 |                                      accounts. Includes the main registry of account 
-|                                      types for this program : the Tag enum
+|                                      types for this program: the Tag enum
 |
 └── tests                            # Contains integration tests
     |

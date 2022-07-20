@@ -8,11 +8,11 @@ This will enable us to better understand how to write programs using the bonfida
 Our token vesting program will be a simple solution to a common problem. 
 Given a supply of tokens, how can we use on-chain logic to distribute those tokens to investors while making sure that those tokens cannot be used until a predetermined delay, or _schedule_?
 The basic idea is that we use an on-chain program (or _smart contract_) to hold the funds and gradually _unlock_ those. 
-This allows the whole transaction to be completely trustless : the claimers can trust in the fact that they _will_ receive those tokens on the agreed-upon schedule, and the providers can trust in the fact that the claimers will not bypass the vesting schedule.
+This allows the whole transaction to be completely trustless: the claimers can trust in the fact that they _will_ receive those tokens on the agreed-upon schedule, and the providers can trust in the fact that the claimers will not bypass the vesting schedule.
 In this context, the program acts as a trusted third-party.
 
-Any token vesting transactions thus has two types of users : the claimers, and the providers.
-The core logic requires only two types of operation : vesting contract creation, and claiming.
+Any token vesting transactions thus has two types of users: the claimers, and the providers.
+The core logic requires only two types of operation: vesting contract creation, and claiming.
 We call those operations the program's _instructions_.
 
 - `create` will initialize a vesting contract for a given quantity of a particular token, with a set schedule.
@@ -24,7 +24,7 @@ In order to hold the vested assets, each token vesting contract has an associate
 A vault is a normal token account which is owned by an associated _PDA_, more on that later.
 
 Each vesting contract will thus have an associated state account owned by our program.
-These accounts will hold a serialized version of a `VestingContract` object :
+These accounts will hold a serialized version of a `VestingContract` object:
 
 ```rust
 pub struct VestingContract {
@@ -41,7 +41,9 @@ pub struct VestingContract {
 }
 
 pub struct VestingSchedule {
+    /// When to unlock the assets
     pub unlock_timestamp: u64,
+    /// What quantity of assets to unlock
     pub quantity: u64
 }
 ```

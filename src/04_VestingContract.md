@@ -3,7 +3,7 @@
 The core data structure on which we are building our program will be called `VestingContract`. 
 Since we will be using type-casting through the `bytemuck` library, we need to iterate and think about the various types of constraints our definition will need to obey.
 
-## First iteration : what data do we need?
+## First iteration: what data do we need?
 
 Our program's logic will need something equivalent to the following data structure.
 
@@ -32,7 +32,7 @@ We'll also delete the `src/state/example_state_borsh.rs` file.
 Hopefully our IDE will take care of the refactor.
 Let's then refactor the `ExampleStateCast` struct to `VestingContract` and paste in the above definitions.
 
-We should be left with something like this :
+We should be left with something like this:
 
 ```rust,noplayground
 #[derive(Clone, Copy, Zeroable, Pod)]
@@ -96,7 +96,7 @@ This layer of indirection is of no consequence in terms of performance, and allo
 
 ## Second Iteration: fixing our definitions
 
-We begin by renaming the `VestingContract` object into `VestingContractHeader`, removing the schedules from it :
+We begin by renaming the `VestingContract` object into `VestingContractHeader`, removing the schedules from it:
 
 ```rust
 #[derive(Clone, Copy, Zeroable, Pod)]
@@ -131,7 +131,7 @@ Let's take some time to talk about memory alignment.
 Modern CPUs are wonderful things which are able to manipulate all kinds of objects.
 In practice, every operation which a CPU can execute (also called an assembly instruction), _is_ actual physical wiring on the chip.
 Depending on the chip, designers can cut down on complexity and conversely increase performance by requiring data to be aligned in a certain way.
-As a somewhat appropriate analogy, let's take a list of five 8-letter words :
+As a somewhat appropriate analogy, let's take a list of five 8-letter words:
 ```
 although
 boundary
@@ -139,7 +139,7 @@ calendar
 chemical
 diameter
 ```
-Providing a CPU with non-aligned data is akin to presenting you the same list in this way :
+Providing a CPU with non-aligned data is akin to presenting you the same list in this way:
 ```
 although
        boundary
@@ -147,15 +147,15 @@ although
                 chemical
  diameter
 ```
-It's just harder to parse, because we're our ability to parse lists of words is _hard-wired_ to a certain format.
+It's just harder to parse, because our ability to parse lists of words is _hard-wired_ to a certain format.
 So let's give our poor CPUs a break and look at alignment constraints on the `BPF` architecture.
 
 For any memory address, we say that it is aligned to `n` if its address is a multiple of `n`.
-On the Solana BPF (the on-chain program runtime) and `x86_64` architectures, alignment constraints are as follows :
+On the Solana BPF (the on-chain program runtime) and `x86_64` architectures, alignment constraints are as follows:
 - Primitive types must be aligned to their size, up to a maximum of 8.
 - Structs must be aligned to the maximum of their fields' alignment constraints.
 
-For primitive types, this yields the following table :
+For primitive types, this yields the following table:
 
 | Primitive Type | Size (in bytes) | Alignment constraint |
 | -------------- | --------------- | -------------------- |
@@ -197,7 +197,7 @@ pub struct VestingContract<'a> {
 }
 ```
 
-The `impl` blocks are refactored in the following manner :
+The `impl` blocks are refactored in the following manner:
 ```rust
 impl VestingContractHeader {
     pub const LEN: usize = std::mem::size_of::<Self>();
@@ -216,14 +216,14 @@ impl<'contract> VestingContract<'contract> {
 
 What remains is to update `VestingContract`'s `initialize` and `from_buffer` method.
 The first step in doing so is to refactor the `super::Tag::ExampleStateCast` object to `super::Tag::VestingContract`.
-Doing so finalizes the `initialize` method : its only role is to write the account's tag into the first 8 bytes of the data buffer.
-Tags are incredibly important to ensure that an account is being interpreted correctly : we wouldn't want an attacker to substitute one type of account for another.
+Doing so finalizes the `initialize` method: its only role is to write the account's tag into the first 8 bytes of the data buffer.
+Tags are incredibly important to ensure that an account is being interpreted correctly: we wouldn't want an attacker to substitute one type of account for another.
 This is a way of implementing runtime type checks on all accounts to decrease our program's attack surface.
 
 The `initialize` method also checks that the account has not been initialized before.
-This gives us a double guarantee : that we're not attempting to corrupt/overwrite existing data, and that the entire account's data is zeroed out.
+This gives us a double guarantee: that we're not attempting to corrupt/overwrite existing data, and that the entire account's data is zeroed out.
 
-Finally, we need to fix the `from_buffer` method. The first 4 lines of the method do not need to be changed. The correct implementation is as follows :
+Finally, we need to fix the `from_buffer` method. The first 4 lines of the method do not need to be changed. The correct implementation is as follows:
 
 ```rust
     pub fn from_buffer(
@@ -246,7 +246,7 @@ Finally, we need to fix the `from_buffer` method. The first 4 lines of the metho
 One important thing to know is that we're casting the _entire length_ of the buffer.
 This means that the account's allocated length _must_ be of a valid size, otherwise this operation will fail.
 <!-- An alternative approach would be to add a `number_of_schedules` field to our `VestingContractHeader`, and then `split_at_mut` the `schedules` buffer again at `number_of_schedules * VestingSchedule::LEN`. -->
-To make this less error-prone, we need to write a helper static method called `compute_allocation_size` which determines the valid size for a `VestingContract` data account in terms of its desired number of schedules :
+To make this less error-prone, we need to write a helper static method called `compute_allocation_size` which determines the valid size for a `VestingContract` data account in terms of its desired number of schedules:
 
 ```rust
     pub fn compute_allocation_size(number_of_schedules: usize) -> usize {
@@ -269,7 +269,7 @@ This means that our vesting contract would be a unique program-derived address (
 However, in our case, we do not want to add this constraint since any user can hold several vesting contracts.
 This is why we won't be using a PDA here, and we can just delete the `find_key` method and its associated `SEED` constant.
 
-If you have been following along, your `src/state/vesting_contract.rs` file should look something like this :
+If you have been following along, your `src/state/vesting_contract.rs` file should look something like this:
 
 ```rust,noplayground
 use bonfida_utils::WrappedPodMut;
@@ -329,7 +329,7 @@ impl<'contract> VestingContract<'contract> {
         Ok(())
     }
 
-    /// Cast the buffer asa a VestingContract reference wrapper
+    /// Cast the buffer as a VestingContract reference wrapper
     pub fn from_buffer(
         buffer: &'contract mut [u8],
         expected_tag: super::Tag,

@@ -1,13 +1,13 @@
-# Writing an instruction : create
+# Writing an instruction: create
 
 In the previous sections, we have defined our program's main data structure `VestingContract`.
-The next step is to write our program's one of two main primitives : `create`.
+The next step is to write our program's one of two main primitives: `create`.
 
 We'll start by renaming the `src/processor/example_instr.rs` file to `create.rs`.
 Similarly we'll rename the `ExampleInstr` variant of the `instruction::ProgramInstruction` enum to `Create`, and the `instruction::example` binding to `create`.
-We should also alter the log message in `processor.rs` from `"Instruction: Example Instruction"` to `"Instruction: Create"`.
+We should also alter the log message in `processor.rs` from `"Instruction: Example Instruction"` to `"Instruction: Create"`, and update the instruction comment at the top of `create.rs` to `//! Create a new token vesting contract`.
 
-This primtive will perform several operations :
+This primtive will perform several operations:
 - Initialize a new `VestingContract` account/object
 - Configure the `VestingContract` with user-provided parameters
 - Transfer funds into the program vault
@@ -16,18 +16,18 @@ An instruction's specification is defined by its `Accounts` and `Params` objects
 
 ## Required accounts
 
-For our vesting contract, we need to know about 
-- the eventual token receiver, so we'll need a `recipient` account.
-- the account that will hold the `VestingContract` data, the `vesting_contract` account.
+For our vesting contract, we need to know about:
+- The eventual token receiver, so we'll need a `recipient` account.
+- The account that will hold the `VestingContract` data, the `vesting_contract` account.
 We'll need this account to be writable _and_ owned by our current program.
-- the escrow vault, the `vault` account. 
+- The escrow vault, the `vault` account. 
 We'll need this account to be writable since we're going to transfer funds into it.
 It needs to be owned by the `spl_token` program as well.
-- the `spl_token_program` account, since we're going to be performing token transfers.
-- the `source_tokens` account, which will need to be writable as well.
-- the `source_tokens_owner` account, which we'll need as a signer to enable us to successfully transfer the tokens into our vault.
+- The `spl_token_program` account, since we're going to be performing token transfers.
+- The `source_tokens` account, which will need to be writable as well.
+- The `source_tokens_owner` account, which we'll need as a signer to enable us to successfully transfer the tokens into our vault.
 
-The associated `Accounts` struct thus looks like this :
+The associated `Accounts` struct thus looks like this:
 ```rust
 #[derive(InstructionsAccount)]
 pub struct Accounts<'a, T> {
@@ -59,6 +59,11 @@ The first thing to notice is that the `Accounts` struct is generic over what we 
 The reason why it is generic is to enable the same struct to be used with references to `Pubkey` objects when writing bindings, or `AccountInfo` objects when writing the instruction's logic.
 
 The `InstructionsAccount` trait is useful to auto-generate Rust instruction bindings, which we'll make use of later.
+This trait's automatic derivation may need annotations.
+This is where the `#[cons(signer)]` and `#[cons(writable)]` field attributes come in.
+In general, struct fields with the `InstructionsAccount` auto-derived trait can take a `#[cons(...)]` attribute.
+`cons` stands for _constraint_: we can require the account to be writable, to be a signer, or both.
+This gives the valid attributes `#[cons(signer)]`, `#[cons(writable)]`, `#[cons(signer, writable)]` and `#[cons(writable, signer)]`.
 
 We then need to implement a method to parse the `&[AccountInfo]` slice into our `Accounts` struct. 
 We will also use this method to perform rudimentary but _essential_ security checks.
@@ -104,19 +109,19 @@ Sometimes even auditors can get confused when these checks are not displayed obv
 
 Let's go through these checks one by one and explain why they are all here. 
 You won't need to necessarily think too deeply about these checks when writing your own programs, you should just ask yourself: how can I constrain these accounts as much as possible using the rudimentary `check_signer`, `check_account_owner` and `check_account_key` security primitives? 
-As general rule of thumb, the tighter the constraint, the smaller the attack surface.
+As a general rule of thumb, the tighter the constraint, the smaller the attack surface.
 
 ```rust,noplayground
 check_account_key(accounts.spl_token_program, &spl_token::ID)?;
 ```
-This check is essential. We'll be performing token transfers using this program and we need to be sure that we're actually calling the write program. 
+This check is essential. We'll be performing token transfers using this program and we need to be sure that we're actually calling the right program. 
 An attacker could substitute their own program here and leverage the `source_tokens_owner` signature to take ownership of the token account!
 
 ```rust,noplayground
 check_account_owner(accounts.vesting_contract, program_id)?;
 ```
 We're going to be editing the `vesting_contract` account data, and we need to be sure that _only our program_ can alter this data. 
-The Solana runtime constraints ensure that every byte of a program-owned account's data is either :
+The Solana runtime constraints ensure that every byte of a program-owned account's data is either:
 - determined by the program's logic
 - freshly allocated and therefore 0
 This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
@@ -148,7 +153,7 @@ We only have access to a user-provided slice of bytes, called the _instruction d
 This slice of bytes can be cast into a `Params` wrapper object.
 The approach will be very similar to the way we handled the `VestingContract` object in the previous section.
 
-Let's take a direct look at the `Params` struct :
+Let's take a direct look at the `Params` struct:
 
 ```rust,noplayground
 #[derive(WrappedPod)]
@@ -160,12 +165,12 @@ pub struct Params<'a> {
 ```
 
 In order to handle Params being a wrapped Pod in our Rust instruction bindings, we need to activate the `instruction_params_wrapped` feature.
-In the program `Cargo.toml`, edit the bonfida-utils dependency to :
+In the program `Cargo.toml`, edit the bonfida-utils dependency to:
 ```toml
 bonfida-utils = {version = 0.2, features = ["instruction_params_wrapped"]}
 ```
 
-Then in `instruction.rs`, update the `create` binding to :
+Then in `instruction.rs`, update the `create` binding to:
 
 ```rust,noplayground
 #[allow(missing_docs)]
@@ -173,7 +178,7 @@ pub fn create(accounts: create::Accounts<Pubkey>, params: create::Params) -> Ins
     accounts.get_instruction_wrapped_pod(crate::ID, ProgramInstruction::Create as u8, params)
 }
 ```
-
+We will discuss why the `signer_nonce` parameter is required in a later section.
 In combination with the accounts defined above, we have all the information we need to begin writing the instruction logic!
 
 ## Instruction Logic
@@ -193,11 +198,14 @@ We then unwrap our `params` object into local variables for convenience.
 pub fn process(program_id: &Pubkey, accounts: &[AccountInfo], params: Params) -> ProgramResult {
     let accounts = Accounts::parse(accounts, program_id)?;
     let Params { signer_nonce, schedule } = params;
+
+    // We only want a one-byte signer nonce
+    let signer_nonce = *signer_nonce as u8;
 }
 ```
 
 The first item to take care of is the initialization of the `VestingContract` object.
-We can start by checking that the given account is of the correct size :
+We can start by checking that the given account is of the correct size:
 
 ```rust,noplayground
 let expected_vesting_contract_account_size = VestingContract::compute_allocation_size(schedule.len());
@@ -231,7 +239,7 @@ Now that our `VestingContract` object is properly initialized, we need to save t
     owner: *accounts.recipient.key, 
     vault: *accounts.vault.key,
     current_schedule_index: 0,
-    signer_nonce: *signer_nonce as u8,
+    signer_nonce,
     _padding: [0;7] 
 };
 
@@ -246,12 +254,13 @@ Notice that we use `checked_add` to compute our sum.
 Using checked math is _absolutely essential_.
 Sometimes it might seem redundant.
 Sometimes it might actually be redundant.
-But I'll say the same thing here I said when we discussed account checks : _dont' even think about it!_
+But it's better to think about it this way: if it _can_ overflow, it _will_ overflow.
+_Dont' even think about it!_
 
 The only exception to this rule is `checked_div` when dividing by a constant.
 If you know it to be non-zero because it says so on the same line of code, then you should favor readability.
 
-Finally, we transfer the funds to our vault using the `spl_token` `transfer` instruction :
+Finally, we transfer the funds to our vault using the `spl_token` `transfer` instruction:
 ```rust,noplayground
 let instruction = spl_token::instruction::transfer(
     &spl_token::ID, 
@@ -270,7 +279,7 @@ invoke(&instruction, &[
 ])?;
 ```
 
-Regarding the use of `invoke`, the best way to know what kind of accounts to provide is to :
+Regarding the use of `invoke`, the best way to know what kind of accounts to provide is to:
 - first add the account for the program we're invoking
 - look at the binding code and add all the accounts in order
 
