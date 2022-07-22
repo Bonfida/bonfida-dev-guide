@@ -1,0 +1,1746 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Bonfida Development Guide</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="01_Getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="02_Writing_a_program.html"><strong aria-hidden="true">2.</strong> Writing a program</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.01_Encoding_state.html"><strong aria-hidden="true">2.1.</strong> Encoding state</a></li><li class="chapter-item expanded "><a href="02.02_VestingContract.html"><strong aria-hidden="true">2.2.</strong> Writing state: VestingContract</a></li><li class="chapter-item expanded "><a href="02.03_Instruction_create.html"><strong aria-hidden="true">2.3.</strong> Writing an instruction: create</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.01_Required_accounts.html"><strong aria-hidden="true">2.3.1.</strong> Required Accounts</a></li><li class="chapter-item expanded "><a href="02.03.02_Parameters.html"><strong aria-hidden="true">2.3.2.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="02.03.03_Instruction_logic.html"><strong aria-hidden="true">2.3.3.</strong> Instruction Logic</a></li><li class="chapter-item expanded "><a href="02.03.04_Instruction_create_patch.html"><strong aria-hidden="true">2.3.4.</strong> Patching a vulnerability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.04.01_Instruction_data.html"><strong aria-hidden="true">2.3.4.1.</strong> Instruction data</a></li><li class="chapter-item expanded "><a href="02.03.04.02_Account_data.html"><strong aria-hidden="true">2.3.4.2.</strong> Account data</a></li><li class="chapter-item expanded "><a href="02.03.04.03_Implementing_checks_on_third-party_state.html"><strong aria-hidden="true">2.3.4.3.</strong> Checks on third-party state</a></li></ol></li><li class="chapter-item expanded "><a href="02.03.05_Conclusion.html"><strong aria-hidden="true">2.3.5.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="02.04_Instruction_claim.html"><strong aria-hidden="true">2.4.</strong> Writing an instruction: claim</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Setting up integration testing</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Examples</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> FAQ</div></li><li class="chapter-item expanded affix "><li class="part-title">Using Bonfida tools</li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> utils</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> autobindings</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> autodoc</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> benchviz</div></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Bonfida Development Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>As Bonfida devs, we have been writing Solana programs for some time now. 
+As a result, we have come to cultivate a particular <em>code style</em>. 
+This systematic approach to writing Solana programs has enabled us to write programs faster, with no sacrifice to their security.
+If anything, being systematic abour our programs has made them <em>safer</em> and easier to audit.</p>
+<p>Our approach is based on several key principles:</p>
+<ul>
+<li>We don't use frameworks, and this is not quite a framework: critical program logic should never be hidden away behind macros.</li>
+<li>Security checks should always be obvious.</li>
+<li>Redundant security and safety checks are better than implicit ones.</li>
+</ul>
+<p>This book is intended as a guide to what we have come to define internally as the <em>Bonfida style</em>. 
+As we learn new and better ways to write programs, it will necessarily evolve.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<h2 id="installing-the-bonfida-tool-suite"><a class="header" href="#installing-the-bonfida-tool-suite">Installing the Bonfida tool suite</a></h2>
+<p>Installing the Bonfida tool suite is quite straightforward.</p>
+<pre><code class="language-bash">cargo install --git https://github.com/Bonfida/bonfida-utils.git cli
+</code></pre>
+<p>This command installs the <code>bonfida</code> CLI tool, which incorporates a few useful development tools.
+You can run <code>bonfida help</code> to get a list of available commands.</p>
+<p>In order to update the tool, just re-run the above command.</p>
+<h2 id="creating-a-new-project"><a class="header" href="#creating-a-new-project">Creating a new project</a></h2>
+<p>To initialize a new project <em>my-project</em> in the current directory, we use the following command:</p>
+<pre><code class="language-bash">bonfida autoproject my-project
+cd my-project
+</code></pre>
+<h2 id="overview-of-project-structure"><a class="header" href="#overview-of-project-structure">Overview of project structure</a></h2>
+<p>Each new project is a sort of monorepo containing three folders</p>
+<pre><code class="language-bash">├── js
+├── program
+└── python
+</code></pre>
+<ul>
+<li>The <code>js</code> folder is used to build JavaScript bindings for the current project.</li>
+<li>The <code>program</code> folder contains the on-chain Solana program</li>
+<li>The <code>python</code> folder contains Python bindings</li>
+</ul>
+<h3 id="the-program"><a class="header" href="#the-program">The program</a></h3>
+<p>The summary below describes the basic structure of the program's files, as well as their individual purpose.</p>
+<pre><code class="language-text">program                               
+├── Cargo.toml                       
+├── src                              
+│   ├── cpi.rs                       
+│   ├── entrypoint.rs                # Boilerplate for the solana program's entrypoint
+|   |
+│   ├── error.rs                     # Custom errors for the program. Varied and 
+|   |                                  descriptive errors should be preferred!
+|   |
+│   ├── instruction.rs               # The instruction enum which serves as a registry 
+|   |                                  of supported instructions.
+│   │                                  It also contains the Rust bindings for every 
+|   |                                  instruction.
+|   |
+│   ├── lib.rs                       # Structural root of the crate. Contains a 
+|   |                                  `declare_id` statement which defines the 
+|   |                                  program's reference on-chain key.
+|   |
+│   ├── processor                    # Folder holding the available instructions' logic
+|   |   |
+│   │   └── example_instr.rs         # Example instruction. Each instruction file 
+|   |                                  follows a strict template to optimize ease of 
+|   |                                  audit and general readability.
+|   |
+│   ├── processor.rs                 # The processor itelf is a dispatcher for all 
+|   |                                  instructions. The program entrypoint directly 
+|   |                                  calls the processor.
+|   |
+│   ├── state                        # Contains one file per type of program state 
+|   |   |                              account. This can range from anything to user 
+|   |   |                              accounts or central system state
+|   |   |
+│   │   ├── example_state_borsh.rs   # An example account type which uses Borsh for 
+|   |   |                              serialization and deserialization
+|   |   |
+│   │   └── example_state_cast.rs    # An example account type which uses direct 
+|   |                                  casting. Casting is more efficient in terms of 
+|   |                                  compute budget compared to conventional 
+|   |                                  serialization/deserialization.
+|   | 
+│   └── state.rs                     # Contains general utilities related to state 
+|                                      accounts. Includes the main registry of account 
+| types for this program: the Tag enum |
+|--------------------------------------|
+└── tests                            # Contains integration tests
+    |
+    ├── common                       # Contains common integration testing utilities
+    │   ├── mod.rs                   
+    │   └── utils.rs                 
+    └── functional.rs                # The main integration test. Should be used as a 
+                                      high-level and primitive test of every 
+                                      instruction.
+
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="writing-a-simple-program"><a class="header" href="#writing-a-simple-program">Writing a simple program</a></h1>
+<p>In this section, we will work through the writing of a simple token vesting program.
+This will enable us to better understand how to write programs using the bonfida toolkit.</p>
+<h2 id="what-we-are-trying-to-create"><a class="header" href="#what-we-are-trying-to-create">What we are trying to create</a></h2>
+<p>Our token vesting program will be a simple solution to a common problem.
+Given a supply of tokens, how can we use on-chain logic to distribute those tokens to investors while making sure that those tokens cannot be used until a predetermined delay, or <em>schedule</em>?
+The basic idea is that we use an on-chain program (or <em>smart contract</em>) to hold the funds and gradually <em>unlock</em> those.
+This allows the whole transaction to be completely trustless: the claimers can trust in the fact that they <em>will</em> receive those tokens on the agreed-upon schedule, and the providers can trust in the fact that the claimers will not bypass the vesting schedule.
+In this context, the program acts as a trusted third-party.</p>
+<p>Any token vesting transactions thus has two types of users: the claimers, and the providers.
+The core logic requires only two types of operation: vesting contract creation, and claiming.
+We call those operations the program's <em>instructions</em>.</p>
+<ul>
+<li><code>create</code> will initialize a vesting contract for a given quantity of a particular token, with a set schedule.</li>
+<li><code>claim</code> will transfer unlocked funds from a particular vesting contract to its receiver.</li>
+</ul>
+<p>The last thing we need is a way for the program to hold state.
+This means that we need a program to <em>remember</em> the active vesting contracts and to hold their associated funds.
+In order to hold the vested assets, each token vesting contract has an associated vault.
+A vault is a normal token account which is owned by an associated <em>PDA</em>, more on that later.</p>
+<p>Each vesting contract will thus have an associated state account owned by our program.
+These accounts will hold a serialized version of a <code>VestingContract</code> object:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct VestingContract {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    /// Describes the token release schedule
+    pub schedule: Vec&lt;VestingSchedule&gt;
+}
+
+pub struct VestingSchedule {
+    /// When to unlock the assets
+    pub unlock_timestamp: u64,
+    /// What quantity of assets to unlock
+    pub quantity: u64
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>In reality, we will define the <code>VestingContract</code> object quite differently in order to greatly optimize its on-chain serialization and deserialization. This will allow us to handle arbitrarily complex vesting schedules while never running out of compute budget. Thus, the actual <code>VestingContract</code> object will be defined in the following way:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct VestingContract&lt;'a&gt; {
+    pub header: &amp;'a mut VestingContractHeader,
+    pub schedule: &amp;'a mut [VestingSchedule]
+}
+
+pub struct VestingContractHeader {
+    pub owner: Pubkey,
+    pub vault: Pubkey,
+    pub current_schedule_index: u64,
+    pub signer_nonce: u8,
+    pub _padding: [u64; 3],
+    pub schedule_len: u32
+}
+
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We will explore where this added complexity comes from, and why it's actually worth it.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="encoding-state"><a class="header" href="#encoding-state">Encoding state</a></h1>
+<p>In the previous section, we described our program's architecture in rough terms.
+To begin with, let's look at how we can implement our program's data structures.</p>
+<h2 id="how-to-interact-with-data-on-solana"><a class="header" href="#how-to-interact-with-data-on-solana">How to interact with data on Solana</a></h2>
+<p>With Solana programs, any persistent data needs to be encoded into accounts.
+Within the context of a program, an account is represented by an <a href="https://docs.rs/solana-program/latest/solana_program/account_info/struct.AccountInfo.html"><code>AccountInfo</code></a> object.
+The data itself is a mutable reference to a slice of bytes. There are several available options to make use of this slice of bytes.</p>
+<p>Thus, an account can represent quite a few things.
+For instance, it can be a token account which acts as a certificate of ownership for a particular token.</p>
+<h3 id="borsh"><a class="header" href="#borsh">Borsh</a></h3>
+<p>Using the <a href="https://docs.rs/borsh/latest/borsh/"><code>borsh</code></a> library, an object can be serialized and deserialized from an array of bytes.
+This approach has several advantages:</p>
+<ul>
+<li>Packed representation: this representation is quite space-efficient.</li>
+<li>Easier to write bindings in languages other than Rust.</li>
+<li>No constraint on memory alignment and padding</li>
+</ul>
+<p>The main disadvantage posed by Borsh is that the serialization and deserialization operations have to iterate through the entire data slice, and perform copy operations.
+This means that this approach is impractical for larger data structures and can consume a substantial amount of the available compute budget.</p>
+<p>While this approach is recommended by Solana for its relative simplicity and good compatibility with existing tooling, for better performance, convenience, and even readability, we represent the following hybrid approach.</p>
+<h3 id="bytemuck-on-chain-borsh-off-chain"><a class="header" href="#bytemuck-on-chain-borsh-off-chain">Bytemuck on-chain, Borsh off-chain</a></h3>
+<p>The <a href="https://docs.rs/bytemuck/latest/bytemuck/"><code>bytemuck</code></a> library allows for safe <em>type casting</em> in Rust.
+While type casting is a very common concept in the context of C and C++, it has a bad reputation within the Rust community as being synonymous with memory unsafety, which goes against the language's key design principles.
+However, using <code>bytemuck</code> allows us to get the best of both worlds: the efficiency of type casting without its pitfalls.</p>
+<p>Type casting is extremely efficient because it doesn't copy any data.
+This means that very large data structures can be handled with no compute overhead <em>and</em> optimal readability.
+When using a serialization approach, it is necessary to <em>commit</em> any changes made to an object to its storage account.
+This is an extremely error-prone approach.</p>
+<p>These advantages come at the cost of some constraints:</p>
+<ul>
+<li>Certain types have to be aligned to particular offsets.</li>
+<li>Object sizes must be a multiple of their own alignment constraint.</li>
+</ul>
+<p>While working with theses kinds of abstract constraints can seem quite daunting, <code>bytemuck</code> provides us with convenient derive macros which are able to detect these issues before compilation. By looking at an example, we'll see how these constraints come into play, and how we can deal with them.</p>
+<p>Finally, once our data structure is well-defined to play along with <code>bytemuck</code>, we can write a compatible <code>borsh</code> schema to leverage its implementations across various programming languages.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="vestingcontract"><a class="header" href="#vestingcontract">VestingContract</a></h1>
+<p>The core data structure on which we are building our program will be called <code>VestingContract</code>.
+Since we will be using type-casting through the <code>bytemuck</code> library, we need to iterate and think about the various types of constraints our definition will need to obey.</p>
+<h2 id="first-iteration-what-data-do-we-need"><a class="header" href="#first-iteration-what-data-do-we-need">First iteration: what data do we need?</a></h2>
+<p>Our program's logic will need something equivalent to the following data structure.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct VestingContract {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    /// Describes the token release schedule
+    pub schedule: Vec&lt;VestingSchedule&gt;
+}
+
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>In our freshly created project, let's start by renaming the <code>src/state/example_state_cast.rs</code> to <code>src/state/vesting_contract.rs</code>.
+We'll also delete the <code>src/state/example_state_borsh.rs</code> file.
+Hopefully our IDE will take care of the refactor.
+Let's then refactor the <code>ExampleStateCast</code> struct to <code>VestingContract</code> and paste in the above definitions.</p>
+<p>We should be left with something like this:</p>
+<pre><code class="language-rust noplayground">#[derive(Clone, Copy, Zeroable, Pod)]
+#[allow(missing_docs)]
+#[repr(C)]
+pub struct VestingContract {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    /// Describes the token release schedule
+    pub schedule: Vec&lt;VestingSchedule&gt;,
+}
+
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64,
+}
+</code></pre>
+<p>Since <code>VestingContract</code> implements the <code>Clone</code>, <code>Copy</code>, <code>Zeroable</code> and <code>Pod</code> traits we need to derive these traits for <code>VestingSchedule</code> as well.
+The last two traits are related to <code>bytemuck</code> and enable type casting.
+Same goes for the <code>repr(C)</code> atrribute which is essential for type casting.</p>
+<pre><pre class="playground"><code class="language-rust compile_fail"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Zeroable, Pod)]
+#[allow(missing_docs)]
+#[repr(C)]
+pub struct VestingContract {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    /// Describes the token release schedule
+    pub schedule: Vec&lt;VestingSchedule&gt;,
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>However, the above still does not compile. To sum up, the core bytemuck trait we are interested in is the <code>Pod</code> trait. This trait requires the <code>Zeroable</code> and <code>Copy</code> traits. However, a <code>Vec</code> does not implement the <code>Copy</code> trait. In general, this is due to the fact that <code>Vec</code> is a pointer which <em>owns</em> a section of heap memory. Copying it would mean allocating a new section of heap memory, whereas the <code>Copy</code> trait is reserved for variables which exist on the stack.</p>
+<p>In fact it is impossible to directly cast <code>Vec</code> objects.
+To work around this limitation, we split our object into a reference to a header and a reference to a slice of <code>VestingSchedule</code> objects.
+This means that the <code>VestingContract</code> object will hold cast references to the underlying objects, instead of being a direct cast by itself.
+This layer of indirection is of no consequence in terms of performance, and allows us a lot more flexibility in terms of the kind of data structures we can type cast.</p>
+<h2 id="second-iteration-fixing-our-definitions"><a class="header" href="#second-iteration-fixing-our-definitions">Second Iteration: fixing our definitions</a></h2>
+<p>We begin by renaming the <code>VestingContract</code> object into <code>VestingContractHeader</code>, removing the schedules from it:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Zeroable, Pod)]
+#[allow(missing_docs)]
+#[repr(C)]
+pub struct VestingContractHeader {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    pub _padding: [u8; 7],
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Ah, and we also added an extra field called <code>_padding</code>.
+This is where using directly type-cast data structures can seem daunting at first.
+Let's take some time to talk about memory alignment.</p>
+<h3 id="an-aside-on-padding-and-memory-alignment"><a class="header" href="#an-aside-on-padding-and-memory-alignment">An aside on padding and memory alignment</a></h3>
+<p>Modern CPUs are wonderful things which are able to manipulate all kinds of objects.
+In practice, every operation which a CPU can execute (also called an assembly instruction), <em>is</em> actual physical wiring on the chip.
+Depending on the chip, designers can cut down on complexity and conversely increase performance by requiring data to be aligned in a certain way.
+As a somewhat appropriate analogy, let's take a list of five 8-letter words:</p>
+<pre><code class="language-text">although
+boundary
+calendar
+chemical
+diameter
+</code></pre>
+<p>Providing a CPU with non-aligned data is akin to presenting you the same list in this way:</p>
+<pre><code class="language-text">although
+       boundary
+   calendar
+                chemical
+ diameter
+</code></pre>
+<p>It's just harder to parse, because our ability to parse lists of words is <em>hard-wired</em> to a certain format.
+So let's give our poor CPUs a break and look at alignment constraints on the <code>BPF</code> architecture.</p>
+<p>For any memory address, we say that it is aligned to <code>n</code> if its address is a multiple of <code>n</code>.
+On the Solana BPF (the on-chain program runtime) and <code>x86_64</code> architectures, alignment constraints are as follows:</p>
+<ul>
+<li>Primitive types must be aligned to their size, up to a maximum of 8.</li>
+<li>Structs must be aligned to the maximum of their fields' alignment constraints.</li>
+</ul>
+<p>For primitive types, this yields the following table:</p>
+<div class="table-wrapper"><table><thead><tr><th>Primitive Type</th><th>Size (in bytes)</th><th>Alignment constraint</th></tr></thead><tbody>
+<tr><td><code>u8</code>, <code>i8</code></td><td>1</td><td>1</td></tr>
+<tr><td><code>u16</code>, <code>i16</code></td><td>2</td><td>2</td></tr>
+<tr><td><code>u32</code>, <code>i32</code></td><td>4</td><td>4</td></tr>
+<tr><td><code>u64</code>, <code>i64</code></td><td>8</td><td>8</td></tr>
+<tr><td><code>u128</code>, <code>i128</code></td><td>16</td><td>8</td></tr>
+</tbody></table>
+</div>
+<p>When the runtime provides you with an account, the address of its first byte can be considered to be 0.
+The first 8 bytes are going to be used by the account or instruction tag, which is encoded as a <code>u64</code>.
+We would be tempted to use a <code>u8</code> here, but this would make the rest of the buffer start aligned to 1, which precludes all but the most basic types.</p>
+<p>On the <code>BPF</code> architecture, being 8-aligned is essentially equivalent to being 0-aligned.
+Fortunately, this is also the case on the common <code>x86_64</code> architecture.
+Unfortunately, the apple ARM architecture (i.e. Apple M1, M2, etc.) can sometimes ask for an alignment of 16.
+To get around this, we can use a compilation flag to replace every instance of a type-cast <code>u128</code> by a <code>[u64;2]</code>.
+Even if you don't own an Apple ARM computer, it is important to think about members of the community that do.
+We will discuss how to tackle this issue in an annex.</p>
+<p>So looking at our <code>VestingContractHeader</code> object, we can see that it contains a <code>u64</code> field.
+This means that its size has to be a multiple of 8, which is why we add 7 bytes of padding.
+In practice, these will be implicitly 0 and won't be used by any of our program logic.
+As a nice bonus, if you later want to add a new field to the object, you'll be able to do so while maintaing backwards compatibility!</p>
+<h3 id="final-definition"><a class="header" href="#final-definition">Final definition</a></h3>
+<p>We then define our <code>VestingContract</code> object.
+You should notice that since <code>VestingContract</code> holds references, it has a generic lifetime argument.
+While this can seem daunting, it will not affect its use.
+<code>bonfida-utils</code> can help us out here by automatically deriving the <code>WrappedPodMut</code> trait.
+This trait is specifically designed for objects which hold references to <code>Pod</code> objects which are contiguous in memory.</p>
+<pre><code class="language-rust noplayground">#[derive(WrappedPodMut)]
+pub struct VestingContract&lt;'a&gt; {
+    pub header: &amp;'a mut VestingContractHeader,
+    pub schedules: &amp;'a mut [VestingSchedule],
+}
+</code></pre>
+<p>The <code>impl</code> blocks are refactored in the following manner:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl VestingContractHeader {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+impl VestingSchedule {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+/// An example PDA state, serialized using Borsh //TODO
+#[allow(missing_docs)]
+impl&lt;'contract&gt; VestingContract&lt;'contract&gt; {
+...
+<span class="boring">}
+</span><span class="boring">}
+</span></code></pre></pre>
+<p>What remains is to update <code>VestingContract</code>'s <code>initialize</code> and <code>from_buffer</code> method.
+The first step in doing so is to refactor the <code>super::Tag::ExampleStateCast</code> object to <code>super::Tag::VestingContract</code>.
+Doing so finalizes the <code>initialize</code> method: its only role is to write the account's tag into the first 8 bytes of the data buffer.
+Tags are incredibly important to ensure that an account is being interpreted correctly: we wouldn't want an attacker to substitute one type of account for another.
+This is a way of implementing runtime type checks on all accounts to decrease our program's attack surface.</p>
+<p>The <code>initialize</code> method also checks that the account has not been initialized before.
+This gives us a double guarantee: that we're not attempting to corrupt/overwrite existing data, and that the entire account's data is zeroed out.</p>
+<p>Finally, we need to fix the <code>from_buffer</code> method. The first 4 lines of the method do not need to be changed. The correct implementation is as follows:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    pub fn from_buffer(
+        // We use the `contract lifetime here since our VestingContract
+        // is a set of cast references to this buffer
+        buffer: &amp;'contract mut [u8],
+        expected_tag: super::Tag,
+        // Since we're using a wrapper of references, we return Self
+        // and not &amp;mut Self
+    ) -&gt; Result&lt;Self, TokenVestingError&gt; {
+        let (tag, buffer) = buffer.split_at_mut(8);
+        if *bytemuck::from_bytes_mut::&lt;u64&gt;(tag) != expected_tag as u64 {
+            return Err(TokenVestingError::DataTypeMismatch.into());
+        }
+        // The WrappedPodMut trait does all the heavy lifting here
+        Ok(Self::from_bytes(buffer))
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<p>One important thing to know is that we're casting the <em>entire length</em> of the buffer.
+This means that the account's allocated length <em>must</em> be of a valid size, otherwise this operation will fail.</p>
+<!-- An alternative approach would be to add a `number_of_schedules` field to our `VestingContractHeader`, and then `split_at_mut` the `schedules` buffer again at `number_of_schedules * VestingSchedule::LEN`. -->
+<p>To make this less error-prone, we need to write a helper static method called <code>compute_allocation_size</code> which determines the valid size for a <code>VestingContract</code> data account in terms of its desired number of schedules:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    pub fn compute_allocation_size(number_of_schedules: usize) -&gt; usize {
+        8 + VestingContractHeader::LEN + number_of_schedules * VestingSchedule::LEN
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<p>You should note that we're always adding 8 bytes to account for the type tag.</p>
+<p><code>find_key</code> is the last method we need to take a look at. This method is useful when we want our account's address to be uniquely determined by a set of parameters. For instance, if we wanted to allow for only one vesting contract per recipient, we could write <code>find_key</code> as</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    pub fn find_key(program_id: &amp;Pubkey, recipient: &amp;Pubkey) -&gt; (Pubkey, u8) {
+        let seeds: &amp;[&amp;[u8]] = &amp;[Self::SEED, &amp;recipient.to_bytes()];
+        Pubkey::find_program_address(seeds, program_id)
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<p>This means that our vesting contract would be a unique program-derived address (PDA).
+However, in our case, we do not want to add this constraint since any user can hold several vesting contracts.
+This is why we won't be using a PDA here, and we can just delete the <code>find_key</code> method and its associated <code>SEED</code> constant.</p>
+<p>If you have been following along, your <code>src/state/vesting_contract.rs</code> file should look something like this:</p>
+<pre><code class="language-rust noplayground">use bonfida_utils::WrappedPodMut;
+use bytemuck::{Pod, Zeroable};
+use solana_program::pubkey::Pubkey;
+
+use crate::error::TokenVestingError;
+
+#[derive(WrappedPodMut)]
+pub struct VestingContract&lt;'a&gt; {
+    pub header: &amp;'a mut VestingContractHeader,
+    pub schedules: &amp;'a mut [VestingSchedule],
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+/// Holds vesting contract metadata
+pub struct VestingContractHeader {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    pub _padding: [u8; 7],
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+/// An item of the vesting schedule
+pub struct VestingSchedule {
+    /// When the unlock happens as a UTC timestamp
+    pub unlock_timestamp: u64,
+    /// The quantity of tokens to unlock from the vault
+    pub quantity: u64,
+}
+
+impl VestingContractHeader {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+impl VestingSchedule {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+impl&lt;'contract&gt; VestingContract&lt;'contract&gt; {
+    /// Initialize a new VestingContract data account
+    pub fn initialize(buffer: &amp;mut [u8]) -&gt; Result&lt;(), TokenVestingError&gt; {
+        let (tag, _) = buffer.split_at_mut(8);
+        let tag: &amp;mut u64 = bytemuck::from_bytes_mut(tag);
+        if *tag != super::Tag::Uninitialized as u64 {
+            return Err(TokenVestingError::DataTypeMismatch);
+        }
+        *tag = super::Tag::VestingContract as u64;
+        Ok(())
+    }
+
+    /// Cast the buffer as a VestingContract reference wrapper
+    pub fn from_buffer(
+        buffer: &amp;'contract mut [u8],
+        expected_tag: super::Tag,
+    ) -&gt; Result&lt;Self, TokenVestingError&gt; {
+        let (tag, buffer) = buffer.split_at_mut(8);
+        if *bytemuck::from_bytes_mut::&lt;u64&gt;(tag) != expected_tag as u64 {
+            return Err(TokenVestingError::DataTypeMismatch);
+        }
+        Ok(Self::from_bytes(buffer))
+    }
+
+    /// Compute a valid allocation size for a VestingContract
+    pub fn compute_allocation_size(number_of_schedules: usize) -&gt; usize {
+        8 + VestingContractHeader::LEN + number_of_schedules * VestingSchedule::LEN
+    }
+}
+
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="writing-an-instruction-create"><a class="header" href="#writing-an-instruction-create">Writing an instruction: create</a></h1>
+<p>In the previous sections, we have defined our program's main data structure <code>VestingContract</code>.
+The next step is to write our program's one of two main primitives: <code>create</code>.</p>
+<p>We'll start by renaming the <code>src/processor/example_instr.rs</code> file to <code>create.rs</code>.
+Similarly we'll rename the <code>ExampleInstr</code> variant of the <code>instruction::ProgramInstruction</code> enum to <code>Create</code>, and the <code>instruction::example</code> binding to <code>create</code>.
+We should also alter the log message in <code>processor.rs</code> from <code>&quot;Instruction: Example Instruction&quot;</code> to <code>&quot;Instruction: Create&quot;</code>, and update the instruction comment at the top of <code>create.rs</code> to <code>//! Create a new token vesting contract</code>.</p>
+<p>This primtive will perform several operations:</p>
+<ul>
+<li>Initialize a new <code>VestingContract</code> account/object</li>
+<li>Configure the <code>VestingContract</code> with user-provided parameters</li>
+<li>Transfer funds into the program vault</li>
+</ul>
+<p>An instruction's specification is defined by its <code>Accounts</code> and <code>Params</code> objects. Let's start by thinking about what kinds of accounts we'll need, and then we'll take a look at the associated parameters.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="required-accounts"><a class="header" href="#required-accounts">Required accounts</a></h1>
+<p>For our vesting contract, we need to know about:</p>
+<ul>
+<li>The eventual token receiver, so we'll need a <code>recipient</code> account.</li>
+<li>The account that will hold the <code>VestingContract</code> data, the <code>vesting_contract</code> account.
+We'll need this account to be writable <em>and</em> owned by our current program.</li>
+<li>The escrow vault, the <code>vault</code> account.
+We'll need this account to be writable since we're going to transfer funds into it.
+It needs to be owned by the <code>spl_token</code> program as well.</li>
+<li>The <code>spl_token_program</code> account, since we're going to be performing token transfers.</li>
+<li>The <code>source_tokens</code> account, which will need to be writable as well.</li>
+<li>The <code>source_tokens_owner</code> account, which we'll need as a signer to enable us to successfully transfer the tokens into our vault.</li>
+</ul>
+<p>The associated <code>Accounts</code> struct thus looks like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(InstructionsAccount)]
+pub struct Accounts&lt;'a, T&gt; {
+    /// SPL token program account
+    pub spl_token_program: &amp;'a T,
+
+    /// The account which will store the [`VestingContract`] data structure
+    #[cons(writable)]
+    pub vesting_contract: &amp;'a T,
+
+    /// The contract's escrow vault
+    #[cons(writable)]
+    pub vault: &amp;'a T,
+
+    #[cons(writable)]
+    /// The account currently holding the tokens to be vested
+    pub source_tokens: &amp;'a T,
+
+    #[cons(signer)]
+    /// The owner of the account currently holding the tokens to be vested
+    pub source_tokens_owner: &amp;'a T,
+
+    /// The eventual recipient of the vested tokens
+    pub recipient: &amp;'a T,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The first thing to notice is that the <code>Accounts</code> struct is generic over what we actually mean by what an <em>account</em> is.
+The reason why it is generic is to enable the same struct to be used with references to <code>Pubkey</code> objects when writing bindings, or <code>AccountInfo</code> objects when writing the instruction's logic.</p>
+<p>The <code>InstructionsAccount</code> trait is useful to auto-generate Rust instruction bindings, which we'll make use of later.
+This trait's automatic derivation may need annotations.
+This is where the <code>#[cons(signer)]</code> and <code>#[cons(writable)]</code> field attributes come in.
+In general, struct fields with the <code>InstructionsAccount</code> auto-derived trait can take a <code>#[cons(...)]</code> attribute.
+<code>cons</code> stands for <em>constraint</em>: we can require the account to be writable, to be a signer, or both.
+This gives the valid attributes <code>#[cons(signer)]</code>, <code>#[cons(writable)]</code>, <code>#[cons(signer, writable)]</code> and <code>#[cons(writable, signer)]</code>.</p>
+<p>We then need to implement a method to parse the <code>&amp;[AccountInfo]</code> slice into our <code>Accounts</code> struct.
+We will also use this method to perform rudimentary but <em>essential</em> security checks.
+You should understand the reason behind each check in order to familiarize yourself with basic security base practices when developing for Solana.</p>
+<pre><code class="language-rust noplayground">impl&lt;'a, 'b: 'a&gt; Accounts&lt;'a, AccountInfo&lt;'b&gt;&gt; {
+    pub fn parse(
+        accounts: &amp;'a [AccountInfo&lt;'b&gt;],
+        program_id: &amp;Pubkey,
+    ) -&gt; Result&lt;Self, ProgramError&gt; {
+        let accounts_iter = &amp;mut accounts.iter();
+        let accounts = Accounts {
+            spl_token_program: next_account_info(accounts_iter)?,
+            vesting_contract: next_account_info(accounts_iter)?,
+            vault: next_account_info(accounts_iter)?,
+            source_tokens: next_account_info(accounts_iter)?,
+            source_tokens_owner: next_account_info(accounts_iter)?,
+            recipient: next_account_info(accounts_iter)?,
+        };
+
+        // Check keys
+        check_account_key(accounts.spl_token_program, &amp;spl_token::ID)?;
+
+        // Check owners
+        check_account_owner(accounts.vesting_contract, program_id)?;
+        check_account_owner(accounts.vault, &amp;spl_token::ID)?;
+        check_account_owner(accounts.source_tokens, &amp;spl_token::ID)?;
+
+        // Check signer
+        check_signer(accounts.source_tokens_owner)?;
+
+        Ok(accounts)
+    }
+}
+</code></pre>
+<p>The first part of this method will always be quite similar.
+However, the second part is where we can already protect ourselves against quite a few basic attacks (you would be surprised how many programs have been attacked for failing to perform these basic kinds of checks).
+These checks are also the first thing an auditor will look for, and having them all in the same place facilitates their work.
+Sometimes even auditors can get confused when these checks are not displayed obviously enough!</p>
+<h2 id="checks"><a class="header" href="#checks">Checks</a></h2>
+<p>Let's go through these checks one by one and explain why they are all here.
+You won't need to necessarily think too deeply about these checks when writing your own programs, you should just ask yourself: how can I constrain these accounts as much as possible using the rudimentary <code>check_signer</code>, <code>check_account_owner</code> and <code>check_account_key</code> security primitives?
+As a general rule of thumb, the tighter the constraint, the smaller the attack surface.</p>
+<pre><code class="language-rust noplayground">check_account_key(accounts.spl_token_program, &amp;spl_token::ID)?;
+</code></pre>
+<p>This check is essential. We'll be performing token transfers using this program and we need to be sure that we're actually calling the right program.
+An attacker could substitute their own program here and leverage the <code>source_tokens_owner</code> signature to take ownership of the token account!</p>
+<pre><code class="language-rust noplayground">check_account_owner(accounts.vesting_contract, program_id)?;
+</code></pre>
+<p>We're going to be editing the <code>vesting_contract</code> account data, and we need to be sure that <em>only our program</em> can alter this data.
+The Solana runtime constraints ensure that every byte of a program-owned account's data is either:</p>
+<ul>
+<li>determined by the program's logic</li>
+<li>freshly allocated and therefore 0
+This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
+Failing to perform this check will expose our programs to all sorts of potential attacks.</li>
+</ul>
+<p>In reality our program's logic should already make this check redundant: the <code>VestingContract::initialize</code> method will either attempt to modify the account's data (which is only possible when it is owned by the current program), or just fail.
+Does this mean we should remove this check?
+<em>Absolutely not.</em>
+Our program's logic might change in the future, and we don't want this metaphorical sword of Damocles to hang over our heads.
+These checks are computationally inexpensive, and extremely valuable.
+<em>Overuse</em> them.</p>
+<pre><code class="language-rust noplayground">check_account_owner(accounts.vault, &amp;spl_token::ID)?;
+check_account_owner(accounts.source_tokens, &amp;spl_token::ID)?;
+</code></pre>
+<p>and</p>
+<pre><code class="language-rust noplayground">check_signer(accounts.source_tokens_owner)?;
+</code></pre>
+<p>Technically unnecessary since the call to <code>spl_token_program</code> will take care of these for us.
+Don't even <em>think</em> about removing those.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="parameters"><a class="header" href="#parameters">Parameters</a></h1>
+<p>In addition to the above set of accounts, we need some extra information from the user in order to properly configure the vesting contract.
+We only have access to a user-provided slice of bytes, called the <em>instruction data</em>.
+This slice of bytes can be cast into a <code>Params</code> wrapper object.
+The approach will be very similar to the way we handled the <code>VestingContract</code> object in the previous section.</p>
+<p>Let's take a direct look at the <code>Params</code> struct:</p>
+<pre><code class="language-rust noplayground">#[derive(WrappedPod)]
+pub struct Params&lt;'a&gt; {
+    // Needs to be a `u64` for the schedules slice to be well-aligned in memory
+    signer_nonce: &amp;'a u64,
+    schedule: &amp;'a [VestingSchedule]
+}
+</code></pre>
+<p>In order to handle Params being a wrapped Pod in our Rust instruction bindings, we need to activate the <code>instruction_params_wrapped</code> feature.
+In the program <code>Cargo.toml</code>, edit the bonfida-utils dependency to:</p>
+<pre><code class="language-toml">bonfida-utils = {version = 0.2, features = [&quot;instruction_params_wrapped&quot;]}
+</code></pre>
+<p>Then in <code>instruction.rs</code>, update the <code>create</code> binding to:</p>
+<pre><code class="language-rust noplayground">#[allow(missing_docs)]
+pub fn create(accounts: create::Accounts&lt;Pubkey&gt;, params: create::Params) -&gt; Instruction {
+    accounts.get_instruction_wrapped_pod(crate::ID, ProgramInstruction::Create as u8, params)
+}
+</code></pre>
+<p>We will discuss why the <code>signer_nonce</code> parameter is required in a later section.
+In combination with the accounts defined above, we have all the information we need to begin writing the instruction logic!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="instruction-logic"><a class="header" href="#instruction-logic">Instruction Logic</a></h1>
+<p>Our entry point into the instruction is always a function <code>process</code> with the following signature</p>
+<pre><code class="language-rust noplayground">pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: Params) -&gt; ProgramResult {
+    ...
+}
+</code></pre>
+<p>The first step is to parse our Accounts struct using the <code>Accounts::parse</code> method we defined above.
+Remember that this method is also responsible for performing basic security checks.
+We then unwrap our <code>params</code> object into local variables for convenience.</p>
+<pre><code class="language-rust noplayground">pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: Params) -&gt; ProgramResult {
+    let accounts = Accounts::parse(accounts, program_id)?;
+    let Params { signer_nonce, schedule } = params;
+
+    // We only want a one-byte signer nonce
+    let signer_nonce = *signer_nonce as u8;
+}
+</code></pre>
+<p>The first item to take care of is the initialization of the <code>VestingContract</code> object.
+We can start by checking that the given account is of the correct size:</p>
+<pre><code class="language-rust noplayground">let expected_vesting_contract_account_size = VestingContract::compute_allocation_size(schedule.len());
+
+    if accounts.vesting_contract.data_len() != expected_vesting_contract_account_size {
+        msg!(&quot;The vesting contract account is incorrectly sized for the supplied schedule!&quot;);
+        return Err(ProgramError::InvalidArgument)
+    }
+</code></pre>
+<p>A refinement to this program would involve taking care of the allocation ourselves, thus making sure that the supplied account will be of the correct size.
+However, as long as we supply our users with bindings which can take care of this allocation, this is not really an issue.
+Allocating an account within a program is only required when allocating Program-Derived Addresses (PDAs).
+As discused earlied, this is not a concern here.</p>
+<p>Once we have verified that the account is properly sized, we can actually initialize our <code>VestingContract</code> account, and then retrieve it!</p>
+<pre><code class="language-rust noplayground">// This guard variable is the owned pointer to our actual data
+// Once it goes out of scope (or is dropped), all its dependent references are dropped
+let mut vesting_contract_guard = accounts.vesting_contract.data.borrow_mut();
+
+VestingContract::initialize(&amp;mut vesting_contract_guard)?;
+let vesting_contract = VestingContract::from_buffer(&amp;mut vesting_contract_guard, state::Tag::VestingContract)?;
+</code></pre>
+<p>Now that our <code>VestingContract</code> object is properly initialized, we need to save the user-provided configuration.</p>
+<pre><code class="language-rust noplayground">*vesting_contract.header = VestingContractHeader { 
+    owner: *accounts.recipient.key, 
+    vault: *accounts.vault.key,
+    current_schedule_index: 0,
+    signer_nonce,
+    _padding: [0;7] 
+};
+
+let mut total_amount = 0u64;
+let mut last_timestamp: u64 = 0;
+for (schedule, slot) in schedule.iter().zip(vesting_contract.schedules.iter_mut()) {
+    if schedule.unlock_timestamp &lt; last_timestamp {
+        msg!(&quot;The schedules should be provided in order!&quot;);
+        return Err(ProgramError::InvalidArgument);
+    }
+    last_timestamp = schedule.unlock_timestamp;
+    *slot = *schedule;
+    total_amount = total_amount.checked_add(schedule.quantity).unwrap();
+}
+</code></pre>
+<p>We keep track of the total amount as it represents what we'll have to transfer into our vault.
+Notice that we use <code>checked_add</code> to compute our sum.
+Using checked math is <em>absolutely essential</em>.
+Sometimes it might seem redundant.
+Sometimes it might actually be redundant.
+But it's better to think about it this way: if it <em>can</em> overflow, it <em>will</em> overflow.
+<em>Dont' even think about it!</em></p>
+<p>The only exception to this rule is <code>checked_div</code> when dividing by a constant.
+If you know it to be non-zero because it says so on the same line of code, then you should favor readability.</p>
+<p>We also check that the schedules are given in the right order with <code>last_timestamp</code>.
+This will simplify our computation of what quantity of assets should be unvested.
+This is typically the kind of refinement that you can notice later on while implementing other instructions.
+Always check your assumptions and enforce them if necessary.</p>
+<p>Finally, we transfer the funds to our vault using the <code>spl_token</code> <code>transfer</code> instruction:</p>
+<pre><code class="language-rust noplayground">let instruction = spl_token::instruction::transfer(
+    &amp;spl_token::ID, 
+    accounts.source_tokens.key, 
+    accounts.vault.key, 
+    accounts.source_tokens_owner.key, 
+    &amp;[], 
+    total_amount
+)?;
+
+invoke(&amp;instruction, &amp;[
+    accounts.spl_token_program.clone(),
+    accounts.source_tokens.clone(),
+    accounts.vault.clone(),
+    accounts.source_tokens_owner.clone()
+])?;
+</code></pre>
+<p>Regarding the use of <code>invoke</code>, the best way to know what kind of accounts to provide is to:</p>
+<ul>
+<li>first add the account for the program we're invoking</li>
+<li>look at the binding code and add all the accounts in order</li>
+</ul>
+<h2 id="were-done-right"><a class="header" href="#were-done-right">We're done... right?</a></h2>
+<p>As it stands our program has a major vulnerability which enables a fraudulent vesting contract issuer to dupe their recipient.
+They can run away with the entirety of their funds!
+If you can't find this vulnerability on your own, that's completely normal and we'll discuss general practices to analyze your code.
+Try it anyways, and then let's fix it.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="patching-a-vulnerability"><a class="header" href="#patching-a-vulnerability">Patching a vulnerability</a></h1>
+<p>As mentioned in the previous section, our program in its current state has a major vulnerability.
+It enables a malicious issuer to dupe a recipient into thinking they trustlessly own vested assets, when in reality they don't.
+Let's apply a methodical approach to find this vulnerability.</p>
+<h2 id="thinking-about-attack-vectors"><a class="header" href="#thinking-about-attack-vectors">Thinking about attack vectors</a></h2>
+<p>Very broadly speaking, a vulnerability exists when there is some way to manipulate a program's inputs to make it behave in <em>unexpected</em> ways.
+This means that patching vulnerabilities means looking at a program's inputs and making sure that those are safe.
+Solana programs have two different kinds of input with different security implications:</p>
+<ul>
+<li>Instruction data</li>
+<li>Account data</li>
+<li>System variables</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="instruction-data"><a class="header" href="#instruction-data">Instruction data</a></h1>
+<p>This attack vector is the first we have to secure, and it is also the simplest.
+Securing the instruction data input means making sure that both the deserialization and business logic can handle all possible inputs.
+When we use Borsh or bytemuck as deserializers, any bit pattern which does not conform to our schema will result in an error.
+This is precisely what we want.
+As a corollary, you should be careful when implementing custom deserialization logic.
+Borsh and the tools provided by <code>bonfida-utils</code> <em>should</em> be enough for your use-case.</p>
+<p>The harder part is thinking about the business logic itself.
+You should think about what kind of values your program should allow as input.
+Be <em>as restrictive as possible</em>.
+If a user reports that their own use-case for your product is not handled due to theses restrictions, you can update your program.
+If your program's state / assets are compromised, you can still patch the vulnerability, but the incident will probably have cost you.</p>
+<p>To secure your program's business logic, we recommend a combination of unit and integration testing.
+It can be very useful to use coverage testing tools to make sure that your business logic is sound for every edge case.
+We will discuss testing in a later section.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="account-data"><a class="header" href="#account-data">Account data</a></h1>
+<p>The hardest attack vector to secure is an instruction's accounts.
+The first step in securing this attack vector is to follow our account checks recommendations detailed in the previous section.
+The second and hardest step is to look at account data itself.</p>
+<p>Broadly speaking, your program will interact with two kinds of accounts:</p>
+<ul>
+<li>Accounts which it owns (and are therefore part of its own state)</li>
+<li>Accounts owned by other programs</li>
+</ul>
+<h2 id="thinking-about-your-programs-state"><a class="header" href="#thinking-about-your-programs-state">Thinking about your program's state</a></h2>
+<p>To secure the first type of accounts, a simple but very effective strategy is to use account tags.
+In the Bonfida style, the first 8 bytes of any account are reserved as a descriptor of <em>what kind</em> of account we're dealing with.
+If your program's logic allows for the closing of accounts, a closed account's tag should be set to a <code>Disabled</code> value.
+This makes sure that those accounts can't be used as an attack vector.</p>
+<p>Outside of this notion of account tagging, the safety of an account owned by your own program depends on the safety of your <em>entire business logic</em>.
+This is due to the fact that a program-owned account's data is either just zeros or the result of your program's previous interactions with it.
+This means that whenever your program modifies an account's data (or its state in general), you should make sure that the state remains safe in all situations.
+To deal with theses kinds of vulnerabilities, a clear coding style and proper reviews and even audits are your friends.</p>
+<p>Finally, we have accounts owned by other programs.
+More often than not, depending on an other program's accounts means depending on this program's own safety.
+Always think twice before integrating new on-chain dependencies into your projects:</p>
+<ul>
+<li>Is the program well reviewed and audited?</li>
+<li>Is the program widely used?</li>
+<li>If the program is upgradable, can the team behind it be trusted?</li>
+<li>Do you have a good understanding of the program and its safety guarantees?</li>
+</ul>
+<p>In the case of our <code>token-vesting</code> contract, we depend on the <code>spl-token</code> program.
+Since this program is part of the official Solana Program Library, and has been around for a while now, we can assume that it's quite safe.
+This ticks off the first three requirements.
+However, the final point stands: we need to gain an understanding of this program's security guarantees before we can use it in good conscience.
+As it just so happens, our program is currently vulnerable because we don't look at what's inside the <code>vault</code> spl-token account.</p>
+<h2 id="understanding-your-on-chain-dependencies-spl-token"><a class="header" href="#understanding-your-on-chain-dependencies-spl-token">Understanding your on-chain dependencies: <code>spl-token</code></a></h2>
+<p>Since on-chain programs are security-critical applications, it is essential to take the time to read through the official documentation.
+It often contains security recommentations and can provide you with a better idea of what you are dealing with.
+In the case of <code>spl-token</code>, the documentation can be found <a href="https://spl.solana.com/token">here</a>.
+Since we are going to be using the smart contract's bindings, we should take a look at the library documentation as well.
+It can be found <a href="https://docs.rs/spl-token/latest/spl_token/index.html">here</a>.</p>
+<p>When using an on-chain dependency, we should gain a deep understanding of the interface we are going to be using.
+A program's interface has two components :</p>
+<ul>
+<li>Its instruction specification (what is encoded in <code>instruction_data</code>)</li>
+<li>Its state, and how it is encoded into accounts</li>
+</ul>
+<h3 id="instruction-specification"><a class="header" href="#instruction-specification">Instruction specification</a></h3>
+<p>We're using <code>spl-token</code>'s <code>transfer</code> instruction.
+Let's take a look at the associated binding's documentation <a href="https://docs.rs/spl-token/latest/spl_token/instruction/fn.transfer.html">here</a>.
+This is what it looks like as of writing this :</p>
+<pre><code class="language-rust noplayground">/// Creates a Transfer instruction.
+pub fn transfer(
+    token_program_id: &amp;Pubkey, 
+    source_pubkey: &amp;Pubkey, 
+    destination_pubkey: &amp;Pubkey, 
+    authority_pubkey: &amp;Pubkey, 
+    signer_pubkeys: &amp;[&amp;Pubkey], 
+    amount: u64
+) -&gt; Result&lt;Instruction, ProgramError&gt;
+</code></pre>
+<p>Ah, the documentation is quite lackluster.
+Looking at the binding's signature already gives us a bit of information.
+However, we want to know as much as possible about this instruction.
+We have several options here:</p>
+<ul>
+<li>Find some documentation elsewhere</li>
+<li>Read the instruction code</li>
+</ul>
+<p>As a general rule of thumb, there's a pretty straightforward way to find the documentation we need elsewhere.
+For some reason, program developers are more often than not given less documentation than frontend ones.
+Maybe it's because program development is <em>supposed</em> to be harder?
+Really I don't know, and I would encourage any program developer to always think about both web clients and other programs as interfaces to tailor for.
+I sincerely hope you're reading this and finding this paragraph outdated.
+In the meantime, we can get the information we <em>deserve</em> by looking at the JavaScript/TypeScript documentation <a href="https://solana-labs.github.io/solana-program-library/token/js/modules.html#transfer">here</a>.
+This is what it roughly looks like:</p>
+<blockquote>
+Transfer tokens from one account to another
+<h4 style="margin-top: 4px; margin-bottom: 3px">Parameters</h4>
+<ul>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            connection:
+            <span style="font-weight:normal">
+                <i>Connection</i>
+            </span>
+        </h4>
+        Connection to use
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            payer:
+            <span style="font-weight:normal">
+                <i>Signer</i>
+            </span>
+        </h4>
+        Payer of the transaction fees
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            source:
+            <span style="font-weight:normal">
+                <i>PublicKey</i>
+            </span>
+        </h4>
+        Source account
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            destination:
+            <span style="font-weight:normal">
+                <i>PublicKey</i>
+            </span>
+        </h4>
+        Destination account
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            owner:
+            <span style="font-weight:normal">
+                <i>PublicKey | Signer</i>
+            </span>
+        </h4>
+        Owner of the source account
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            amount:
+            <span style="font-weight:normal">
+                <i>number | bigint</i>
+            </span>
+        </h4>
+        Number of tokens to transfer
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            multiSigners:
+            <span style="font-weight:normal">
+                <i>Signer</i>[] = []
+            </span>
+        </h4>
+        Signing accounts if owner is a multisig
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            <span style="display: inline-block;padding: 1px 5px;border-radius: 4px;color: rgb(47, 49, 54);background-color: rgb(220, 221, 222);text-indent: 0;font-weight: normal;"> Optional</span> confirmOptions:
+            <span style="font-weight:normal">
+                <i>Signer</i>[] = []
+            </span>
+        </h4>
+        Options for confirming the transaction
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            programId:
+            <span style="font-weight:normal">
+                <i>PublicKey</i> = TOKEN_PROGRAM_ID
+            </span>
+        </h4>
+        SPL Token program account
+    </li>
+</ul>
+<h4 style="margin-bottom: 4px">
+    Returns
+    <span style="font-weight:normal">
+        <i>Promise&ltTransactionSignature&gt</i>
+    </span>
+</h4>
+Signature of the confirmed transaction
+</blockquote>
+<p>We get more information here.
+Let's not care about any parameter mentioned here which isn't part of our Rust binding's signature.
+This eliminates <code>connection</code> and <code>confirmOptions</code> from consideration.
+In general, you should make sure that you understand every option, because it's the only way to determine what's important.</p>
+<p>Using this knowledge, we can annotate the Rust binding for our particular use-case: transfering funds to a vault:</p>
+<pre><code class="language-rust noplayground">/// Creates a Transfer instruction.
+pub fn transfer(
+    /// This will be spl_token::ID since we're using the common spl_token instance
+    token_program_id: &amp;Pubkey, 
+    /// This will be the key of the provided account currently holding the tokens to vest
+    source_pubkey: &amp;Pubkey, 
+    /// Our vesting contract's vault key
+    destination_pubkey: &amp;Pubkey, 
+    /// The owner of the source token account's key
+    authority_pubkey: &amp;Pubkey, 
+    /// We won't support vesting tokens from a multisig source account.
+    /// This will be an empty array.
+    signer_pubkeys: &amp;[&amp;Pubkey], 
+    /// The total quantity of tokens to vest
+    amount: u64
+) -&gt; Result&lt;Instruction, ProgramError&gt;
+</code></pre>
+<p>We're quite lucky here: the existing call to <code>transfer</code> is correct in our <code>create</code> instruction!</p>
+<h3 id="account-specification"><a class="header" href="#account-specification">Account specification</a></h3>
+<p>Our <code>create</code> instruction takes several <code>spl_token</code>-owned program accounts as input.
+We should therefore understand what kind of accounts we should expect here.
+Using the library documentation, we find that <code>spl_token</code>'s accounts are all defined in a <code>state</code> module <a href="https://docs.rs/spl-token/latest/spl_token/state/index.html">here</a>.
+Out of all the different types of state defined by <code>spl_token</code>, we're only interested in the <code>Account</code> type.
+This is because we're only using program accounts which <em>hold</em> tokens.</p>
+<p>Let's take a look at the definition of <code>spl_token::state::Account</code>:</p>
+<pre><code class="language-rust noplayground">pub struct Account {
+    /// The mint associated with this account
+    pub mint: Pubkey,
+    /// The owner of this account.
+    pub owner: Pubkey,
+    /// The amount of tokens this account holds.
+    pub amount: u64,
+    /// If `delegate` is `Some` then `delegated_amount` represents
+    /// the amount authorized by the delegate
+    pub delegate: COption&lt;Pubkey&gt;,
+    /// The account's state
+    pub state: AccountState,
+    /// If is_native.is_some, this is a native token, and the value logs the rent-exempt reserve. An
+    /// Account is required to be rent-exempt, so the value is used by the Processor to ensure that
+    /// wrapped SOL accounts do not drop below this threshold.
+    pub is_native: COption&lt;u64&gt;,
+    /// The amount delegated
+    pub delegated_amount: u64,
+    /// Optional authority to close the account.
+    pub close_authority: COption&lt;Pubkey&gt;,
+}
+</code></pre>
+<p>Here we find that every field is properly documented, which will definitely make our job easier!
+The next step is to go through each field and think about <em>constraints</em>.
+How can we use each field to constrain our input accounts as much as possible?
+I have annotated the same struct definition to see what kind of constraints we could enforce.</p>
+<pre><code class="language-rust noplayground">pub struct Account {
+    /// The mint associated with this account
+    // We could check that our vault and destination mints match
+    // However, we know that the spl_token program itself will perform this check
+    pub mint: Pubkey, 
+    /// The owner of this account.
+    // Our vault should be owned by an account controlled by our program!
+    // Otherwise the transfer we perform to our vault creates a fake contract
+    // since our program cannot control the vault's funds!
+    pub owner: Pubkey,
+    /// The amount of tokens this account holds.
+    // We expect our vault to be empty, so let's make sure.
+    pub amount: u64,
+    /// If `delegate` is `Some` then `delegated_amount` represents
+    /// the amount authorized by the delegate
+    // Our vault should not have a delegate authority.
+    pub delegate: COption&lt;Pubkey&gt;,
+    /// The account's state
+    // The account should be Initialized
+    pub state: AccountState,
+    /// If is_native.is_some, this is a native token, and the value logs the rent-exempt reserve. An
+    /// Account is required to be rent-exempt, so the value is used by the Processor to ensure that
+    /// wrapped SOL accounts do not drop below this threshold.
+    // Not caring about this makes our token vesting contract support wrapped SOL.
+    pub is_native: COption&lt;u64&gt;,
+    /// The amount delegated
+    // This should be 0, but we're already enforcing the delegate field to be None
+    pub delegated_amount: u64,
+    /// Optional authority to close the account.
+    // This should absolutely be None for our vault.
+    // It should be impossible for a third-party to close our vault account.
+    pub close_authority: COption&lt;Pubkey&gt;,
+}
+</code></pre>
+<p>Looking at the <code>Account</code> struct, we were able to gain a clearer picture of what we should expect from our <code>vault</code> account.
+Note that we're mostly focusing on enforcing constraints on the vault account here.
+The other token account at play in our <code>create</code> instruction only has to emit the tokens.
+We can trust this simple constraint to be enforced by <code>spl_token</code> itself when we call the <code>transfer</code> instruction.</p>
+<p>However, our vault account will remain tied to our vesting contract instance for the entirety of its lifetime.
+We must therefore make sure that we're getting <em>precisely</em> we need here.
+Our vault account can be thought of as a piece of <em>third-party state</em> for our program.
+This is why we need to understand it as well as we understand our program's own state.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="implementing-checks-on-third-party-state"><a class="header" href="#implementing-checks-on-third-party-state">Implementing checks on third-party state</a></h1>
+<p>In the above discussion, we have determined that our vault should be owned by an account our program controls and can sign for.
+This is where program-derived addresses (PDAs) come into play.</p>
+<h2 id="aside-what-are-program-derived-addresses-pdas"><a class="header" href="#aside-what-are-program-derived-addresses-pdas">Aside: what are Program-Derived Addresses (PDAs)?</a></h2>
+<p>PDAs are Solana's solution for a recurring generic problem in program design : how can our program <em>own</em> anything of value?
+Conventionally, owning an asset on a blockchain means controlling a private key the public key of which is set as its <em>owner</em>.
+Then, users can sign transactions to authorize operations on assets they own.
+They key to all of this is that the private key is only known to its owner.</p>
+<p>Sometimes, we need a program to own something in the same way that a user does.
+However, any information a program has access to is available to anyone, so we can't really give a private key to our program.
+What we need is a public key which isn't tied to a private key, but instead to a particular program.
+This is precisely what PDAs are.</p>
+<p>A PDA is uniquely derived from an array of <em>seeds</em>.
+To generate a PDA, we can use one of two methods <code>Pubkey::find_program_address</code>, or <code>Pubkey::create_program_address</code>.
+The difference between the two is that <code>create_program_address</code> needs <em>valid</em> seeds which generate a valid PDA.
+A valid PDA is a Pubkey which we're sure doesn't have a private key.
+It lies outside the <code>ed25519</code> curve used by Solana.
+<code>find_program_address</code> will take a seed array and find a <code>u8</code> to add to the seed array such that the resulting array is a valid PDA seed.
+We call this <code>u8</code> the <code>signer_nonce</code>.</p>
+<p>We can relate the two methods:</p>
+<pre><code class="language-rust noplayground">let seeds: &amp;[u8] = &amp;[...];
+let (k, nonce) = Pubkey::find_program_address(&amp;[seeds], program_id).unwrap();
+let k2 = Pubkey::create_program_ddress(&amp;[seeds, &amp;[signer_nonce]]).unwrap();
+// k and k2 will be the same
+assert_eq!(k, k2);
+</code></pre>
+<p>In general, <code>find_program_address</code> can be relatively inefficient: it loops over potential nonces until it finds a valid one.
+The real issue is that the length of this loop is quite unpredictable.
+In most cases, it will be very short.
+This means that the entirety of your testing scenarios can only test for short loops, and edge cases can show up in production later down the line.
+Therefore, as a general rule of thumb, <code>find_program_address</code> should be avoided on-chain because it consumes an unreliable amount of compute budget.
+There are exceptions to this rule, especially when PDAs are used as a mapping function.
+This is why we ask the user to provide a <code>signer_nonce</code>: <code>find_program_address</code> is executed off-chain.</p>
+<p>A PDA's seeds serve a similar purpose to a private key.
+When a program needs to sign for a PDA, it uses the PDA's seeds in a call to <code>invoke_signed</code>.
+The runtime can then make sure that the PDA to sign for corresponds to those seeds and the calling program.</p>
+<p>To add a layer of security, we want our vesting contract instances to be as compartmentalized as possible.
+Therefore, we will use the <code>VestingContract</code> key as seeds.
+Each instance already has its own vault, and this allows each contract to have its own separate signing authority.
+The altenative to this is related to the idea of <em>central state</em>, which can be required by some use cases and is supported by <code>bonfida-utils</code>.</p>
+<h2 id="writing-the-check_vault_account-method"><a class="header" href="#writing-the-check_vault_account-method">Writing the <code>check_vault_account</code> method</a></h2>
+<p>Using the constraints we came up with by analyzing the <code>spl_token::Account</code> struct, we can add to <code>create.rs</code>:</p>
+<pre><code class="language-rust noplayground">fn check_vault_account(
+    vault: &amp;AccountInfo,
+    program_id: &amp;Pubkey,
+    contract_key: Pubkey,
+    signer_nonce: u8,
+) -&gt; Result&lt;(), ProgramError&gt; {
+    // We parse the Account struct using the Solana-provided Pack trait
+    let vault_account = spl_token::state::Account::unpack(&amp;vault.data.borrow())?;
+
+    let vault_signer =
+        Pubkey::create_program_address(&amp;[&amp;contract_key.to_bytes(), &amp;[signer_nonce]], program_id)?;
+    let is_valid = vault_account.owner == vault_signer
+        &amp;&amp; vault_account.amount == 0
+        &amp;&amp; vault_account.delegate.is_none()
+        &amp;&amp; vault_account.state == AccountState::Initialized
+        &amp;&amp; vault_account.close_authority.is_none();
+    if !is_valid {
+        return Err(TokenVestingError::InvalidVaultAccount.into());
+    }
+    Ok(())
+}
+</code></pre>
+<p>If the provided vault account is invalid, we return the custom <code>InvalidVaultAccount</code> error.
+Let's define it in <code>error.rs</code> by modifyin the <code>TokenVestingError</code> struct:</p>
+<pre><code class="language-rust noplayground">#[derive(Clone, Debug, Error, FromPrimitive)]
+pub enum TokenVestingError {
+    #[error(&quot;This account is already initialized&quot;)]
+    AlreadyInitialized,
+    #[error(&quot;Data type mismatch&quot;)]
+    DataTypeMismatch,
+    #[error(&quot;Wrong account owner&quot;)]
+    WrongOwner,
+    #[error(&quot;Account is uninitialized&quot;)]
+    Uninitialized,
+    #[error(&quot;The provided vault account is invalid&quot;)]
+    InvalidVaultAccount,
+}
+</code></pre>
+<p>Our project does not compile at this point, and we need to edit <code>TokenVestingError</code>'s impl of the <code>PrintProgramError</code> trait in <code>entrypoint.rs</code>:</p>
+<pre><code class="language-rust noplayground">impl PrintProgramError for TokenVestingError {
+    fn print&lt;E&gt;(&amp;self)
+    where
+        E: 'static + std::error::Error + DecodeError&lt;E&gt; + PrintProgramError + FromPrimitive,
+    {
+        match self {
+            TokenVestingError::AlreadyInitialized =&gt; {
+                msg!(&quot;Error: This account is already initialized&quot;)
+            }
+            TokenVestingError::DataTypeMismatch =&gt; msg!(&quot;Error: Data type mismatch&quot;),
+            TokenVestingError::WrongOwner =&gt; msg!(&quot;Error: Wrong account owner&quot;),
+            TokenVestingError::Uninitialized =&gt; msg!(&quot;Error: Account is uninitialized&quot;),
+            TokenVestingError::InvalidVaultAccount =&gt; {
+                msg!(&quot;Error: The provided vault account is invalid&quot;)
+            }
+        }
+    }
+}
+</code></pre>
+<p>It might seem a bit redundant to have the same error message appear twice in our project.
+However, doing it this way prevents our <code>PrintProgramError</code> implementation from having to use string formatting which is inefficient on-chain.
+The last thing we want is our error messages to be buried under a <code>ComputationalBudgetExceeded</code> error.</p>
+<p>Finally we just have to insert a call to <code>check_vault_account</code> in our <code>create</code> instruction's logic:</p>
+<pre><code class="language-rust noplayground">check_vault_account(
+    accounts.vault,
+    program_id,
+    *accounts.vesting_contract.key,
+    signer_nonce,
+)?;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h1>
+<p>If you've been following along, your <code>create.rs</code> file is in its final form and should look like this:</p>
+<pre><code class="language-rust noplayground">//! Create a new token vesting contract
+
+use bonfida_utils::{checks::check_account_owner, WrappedPod};
+use solana_program::{msg, program::invoke, program_pack::Pack};
+use spl_token::state::AccountState;
+
+use crate::{
+    error::TokenVestingError,
+    state::{
+        self,
+        vesting_contract::{VestingContract, VestingContractHeader, VestingSchedule},
+    },
+};
+
+use {
+    bonfida_utils::{
+        checks::{check_account_key, check_signer},
+        InstructionsAccount,
+    },
+    solana_program::{
+        account_info::{next_account_info, AccountInfo},
+        entrypoint::ProgramResult,
+        program_error::ProgramError,
+        pubkey::Pubkey,
+    },
+};
+
+#[derive(WrappedPod)]
+pub struct Params&lt;'a&gt; {
+    signer_nonce: &amp;'a u64,
+    schedule: &amp;'a [VestingSchedule],
+}
+
+#[derive(InstructionsAccount)]
+pub struct Accounts&lt;'a, T&gt; {
+    /// SPL token program account
+    pub spl_token_program: &amp;'a T,
+
+    /// The account which will store the [`VestingContract`] data structure
+    #[cons(writable)]
+    pub vesting_contract: &amp;'a T,
+
+    /// The contract's escrow vault
+    #[cons(writable)]
+    pub vault: &amp;'a T,
+
+    #[cons(writable)]
+    /// The account currently holding the tokens to be vested
+    pub source_tokens: &amp;'a T,
+
+    #[cons(signer)]
+    /// The owner of the account currently holding the tokens to be vested
+    pub source_tokens_owner: &amp;'a T,
+
+    /// The eventual recipient of the vested tokens
+    pub recipient: &amp;'a T,
+}
+
+impl&lt;'a, 'b: 'a&gt; Accounts&lt;'a, AccountInfo&lt;'b&gt;&gt; {
+    pub fn parse(
+        accounts: &amp;'a [AccountInfo&lt;'b&gt;],
+        program_id: &amp;Pubkey,
+    ) -&gt; Result&lt;Self, ProgramError&gt; {
+        let accounts_iter = &amp;mut accounts.iter();
+        let accounts = Accounts {
+            spl_token_program: next_account_info(accounts_iter)?,
+            vesting_contract: next_account_info(accounts_iter)?,
+            vault: next_account_info(accounts_iter)?,
+            source_tokens: next_account_info(accounts_iter)?,
+            source_tokens_owner: next_account_info(accounts_iter)?,
+            recipient: next_account_info(accounts_iter)?,
+        };
+
+        // Check keys
+        check_account_key(accounts.spl_token_program, &amp;spl_token::ID)?;
+
+        // Check owners
+        check_account_owner(accounts.vesting_contract, program_id)?;
+        check_account_owner(accounts.vault, &amp;spl_token::ID)?;
+
+        // Check signer
+        check_signer(accounts.source_tokens_owner)?;
+
+        Ok(accounts)
+    }
+}
+
+pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: Params) -&gt; ProgramResult {
+    let accounts = Accounts::parse(accounts, program_id)?;
+
+    let Params {
+        signer_nonce,
+        schedule,
+    } = params;
+
+    // We only want a one-byte signer nonce
+    let signer_nonce = *signer_nonce as u8;
+
+    let expected_vesting_contract_account_size =
+        VestingContract::compute_allocation_size(schedule.len());
+
+    if accounts.vesting_contract.data_len() != expected_vesting_contract_account_size {
+        msg!(&quot;The vesting contract account is incorrectly sized for the supplied schedule!&quot;);
+        return Err(ProgramError::InvalidArgument);
+    }
+
+    check_vault_account(
+        accounts.vault,
+        program_id,
+        *accounts.vesting_contract.key,
+        signer_nonce,
+    )?;
+
+    let mut vesting_contract_guard = accounts.vesting_contract.data.borrow_mut();
+
+    VestingContract::initialize(&amp;mut vesting_contract_guard)?;
+    let vesting_contract =
+        VestingContract::from_buffer(&amp;mut vesting_contract_guard, state::Tag::VestingContract)?;
+
+    *vesting_contract.header = VestingContractHeader {
+        owner: *accounts.recipient.key,
+        vault: *accounts.vault.key,
+        current_schedule_index: 0,
+        signer_nonce,
+        _padding: [0; 7],
+    };
+
+    let mut total_amount = 0u64;
+    for (schedule, slot) in schedule.iter().zip(vesting_contract.schedules.iter_mut()) {
+        *slot = *schedule;
+        total_amount = total_amount.checked_add(schedule.quantity).unwrap();
+    }
+
+    let instruction = spl_token::instruction::transfer(
+        &amp;spl_token::ID,
+        accounts.source_tokens.key,
+        accounts.vault.key,
+        accounts.source_tokens_owner.key,
+        &amp;[],
+        total_amount,
+    )?;
+
+    invoke(
+        &amp;instruction,
+        &amp;[
+            accounts.spl_token_program.clone(),
+            accounts.source_tokens.clone(),
+            accounts.vault.clone(),
+            accounts.source_tokens_owner.clone(),
+        ],
+    )?;
+
+    Ok(())
+}
+
+fn check_vault_account(
+    vault: &amp;AccountInfo,
+    program_id: &amp;Pubkey,
+    contract_key: Pubkey,
+    signer_nonce: u8,
+) -&gt; Result&lt;(), ProgramError&gt; {
+    let vault_account = spl_token::state::Account::unpack(&amp;vault.data.borrow())?;
+
+    let vault_signer =
+        Pubkey::create_program_address(&amp;[&amp;contract_key.to_bytes(), &amp;[signer_nonce]], program_id)?;
+    let is_valid = vault_account.owner == vault_signer
+        &amp;&amp; vault_account.amount == 0
+        &amp;&amp; vault_account.delegate.is_none()
+        &amp;&amp; vault_account.state == AccountState::Initialized
+        &amp;&amp; vault_account.close_authority.is_none();
+    if !is_valid {
+        return Err(TokenVestingError::InvalidVaultAccount.into());
+    }
+    Ok(())
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="writing-an-instruction-claim"><a class="header" href="#writing-an-instruction-claim">Writing an instruction: claim</a></h1>
+<p>The final instruction we need to write is <code>claim</code>.
+This instruction allows a vesting contract <em>owner</em> to claim there assets when those unvest.
+The design and implementation process will be mostly similar to the previous section.
+Therefore we'll go a bit faster here and slow down when there are interesting considerations to ponder.</p>
+<h2 id="adding-the-skeleton-for-a-new-instruction"><a class="header" href="#adding-the-skeleton-for-a-new-instruction">Adding the skeleton for a new instruction</a></h2>
+<p>We begin by duplicating the <code>create.rs</code> file, renaming it to <code>claim.rs</code>, declairing the module in <code>processor.rs</code> and wiping our <code>create.rs</code> business logic.
+An alternative would have been to keep the example instruction and restart from there, but it doesn't make much of a difference.</p>
+<p>We won't be needing parameters here : we'll simply extract as many tokens as possible from the vesting contract.
+The <code>Params</code> struct will be empty but we'll use the casting logic anyways.
+I have gone ahead and implemented the instruction.
+You can read through the annotated code:</p>
+<pre><code class="language-rust noplayground">//! Claim unvested tokens
+
+use bonfida_utils::checks::{check_account_key, check_account_owner, check_signer};
+use bytemuck::{Pod, Zeroable};
+use solana_program::{clock::Clock, msg, program::invoke_signed, sysvar::Sysvar};
+
+use crate::state::{self, vesting_contract::VestingContract};
+
+use {
+    bonfida_utils::InstructionsAccount,
+    solana_program::{
+        account_info::{next_account_info, AccountInfo},
+        entrypoint::ProgramResult,
+        program_error::ProgramError,
+        pubkey::Pubkey,
+    },
+};
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+pub struct Params {}
+
+#[derive(InstructionsAccount)]
+pub struct Accounts&lt;'a, T&gt; {
+    /// SPL token program account
+    pub spl_token_program: &amp;'a T,
+
+    /// The account which will store the [`VestingContract`] data structure
+    #[cons(writable)]
+    pub vesting_contract: &amp;'a T,
+
+    /// The signing PDA which owns the vault
+    pub vesting_contract_signer: &amp;'a T,
+
+    /// The contract's escrow vault
+    #[cons(writable)]
+    pub vault: &amp;'a T,
+
+    /// The token account to transfer the unvested assets to
+    #[cons(writable)]
+    pub destination_token_account: &amp;'a T,
+
+    /// The owner of the current vesting contract
+    #[cons(signer)]
+    pub owner: &amp;'a T,
+}
+
+impl&lt;'a, 'b: 'a&gt; Accounts&lt;'a, AccountInfo&lt;'b&gt;&gt; {
+    pub fn parse(
+        accounts: &amp;'a [AccountInfo&lt;'b&gt;],
+        program_id: &amp;Pubkey,
+    ) -&gt; Result&lt;Self, ProgramError&gt; {
+        let accounts_iter = &amp;mut accounts.iter();
+        let accounts = Accounts {
+            spl_token_program: next_account_info(accounts_iter)?,
+            vesting_contract: next_account_info(accounts_iter)?,
+            vesting_contract_signer: next_account_info(accounts_iter)?,
+            vault: next_account_info(accounts_iter)?,
+            destination_token_account: next_account_info(accounts_iter)?,
+            owner: next_account_info(accounts_iter)?,
+        };
+
+        // Check keys
+        check_account_key(accounts.spl_token_program, &amp;spl_token::ID)?;
+
+        // Check owners
+        check_account_owner(accounts.vesting_contract, program_id)?;
+        check_account_owner(accounts.vault, &amp;spl_token::ID)?;
+        check_account_owner(accounts.destination_token_account, &amp;spl_token::ID)?;
+
+        // Check signer
+        check_signer(accounts.owner)?;
+
+        Ok(accounts)
+    }
+}
+
+pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: &amp;Params) -&gt; ProgramResult {
+    let accounts = Accounts::parse(accounts, program_id)?;
+
+    // We begin by parsing the vesting contract account
+    let mut vesting_contract_guard = accounts.vesting_contract.data.borrow_mut();
+    let vesting_contract =
+        VestingContract::from_buffer(&amp;mut vesting_contract_guard, state::Tag::VestingContract)?;
+
+    // We check that the specified owner actually owns this contract
+    if &amp;vesting_contract.header.owner != accounts.owner.key {
+        msg!(&quot;Invalid vesting contract owner!&quot;);
+        return Err(ProgramError::InvalidArgument);
+    }
+
+    // We also check that the vault is the correct one
+    // Since our vesting contract signer is tied to just one vesting contract
+    // This isn't strictly necessary and the call to spl_token would fail.
+    // This is defense in depth. Also it makes for nicer error messages.
+    if &amp;vesting_contract.header.vault != accounts.vault.key {
+        msg!(&quot;Invalid vault provided!&quot;);
+        return Err(ProgramError::InvalidArgument);
+    }
+
+    // We derive and check that the provided contract signer is correct.
+    // In the same way, this isn't strictly necessary.
+    // The call to invoke_signed would fail if this wasn't the case.
+    let contract_signer_key = Pubkey::create_program_address(
+        &amp;[
+            &amp;accounts.vesting_contract.key.to_bytes(),
+            &amp;[vesting_contract.header.signer_nonce as u8],
+        ],
+        program_id,
+    )?;
+
+    if &amp;contract_signer_key != accounts.vesting_contract_signer.key {
+        msg!(&quot;Invalid contract signer provided!&quot;);
+        return Err(ProgramError::InvalidArgument);
+    }
+
+    // We get the current timestamp from the Clock sysvar
+    let current_timestamp = Clock::get()?.unix_timestamp as u64;
+
+    let mut total_amount_to_transfer: u64 = 0;
+
+    // We saturate the vesting_contract.header.current_schedule_index variable in case we don't break
+    // out of our loop. Not doing this would leave the contract empty but in a weird state
+    let current_schedule_index = vesting_contract.header.current_schedule_index as usize;
+    vesting_contract.header.current_schedule_index = u64::MAX;
+
+    for (idx, s) in vesting_contract.schedules[current_schedule_index..]
+        .iter_mut()
+        .enumerate()
+    {
+        if s.unlock_timestamp &gt; current_timestamp {
+            // We update the current_schedule_index for the next call to claim
+            // This prevents the same quantity from being unlocked twice
+            vesting_contract.header.current_schedule_index = idx as u64;
+            break;
+        }
+
+        total_amount_to_transfer = total_amount_to_transfer.checked_add(s.quantity).unwrap();
+        // We zero out the schedule. This isn't strictly necessary as well since we
+        // update the current_schedule_index. Defense in depth.
+        s.quantity = 0;
+    }
+
+    let transfer_instruction = spl_token::instruction::transfer(
+        &amp;spl_token::ID,
+        accounts.vault.key,
+        accounts.destination_token_account.key,
+        accounts.vesting_contract_signer.key,
+        &amp;[],
+        total_amount_to_transfer,
+    )?;
+
+    invoke_signed(
+        &amp;transfer_instruction,
+        &amp;[
+            accounts.spl_token_program.clone(),
+            accounts.vault.clone(),
+            accounts.destination_token_account.clone(),
+            accounts.vesting_contract_signer.clone(),
+        ],
+        &amp;[&amp;[
+            &amp;accounts.vesting_contract.key.to_bytes(),
+            &amp;[vesting_contract.header.signer_nonce as u8],
+        ]],
+    )?;
+
+    Ok(())
+}
+</code></pre>
+<p>Once this is done, we need to add this instruction and its binding to the <code>instruction.rs</code> enum as well as <code>processor.rs</code>.</p>
+<p>In <code>instruction.rs</code>, we add the <code>Claim</code> variant to the <code>ProgramInstruction</code> enum. We also add the following binding:</p>
+<pre><code class="language-rust noplayground">pub fn claim(accounts: claim::Accounts&lt;Pubkey&gt;, params: claim::Params) -&gt; Instruction {
+   accounts.get_instruction_cast(crate::ID, ProgramInstruction::Claim as u8, params)
+}
+</code></pre>
+<p>In <code>processor.rs</code>, we add the following match variant:</p>
+<pre><code class="language-rust noplayground">   ProgramInstruction::Claim =&gt; {
+   msg!(&quot;Instruction: Claim&quot;);
+   let params = bytemuck::from_bytes(instruction_data);
+   claim::process(program_id, accounts, params)?;
+}
+</code></pre>
+<p>The <code>bytemuck::from_bytes</code> logic serves as an illustration for the syntax to use when dealing with simple parameters.
+You can omit it.</p>
+<p>With this, the entire logic of our program is done!
+The next step is to add some basic integration tests.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>

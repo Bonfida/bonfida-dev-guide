@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Required Accounts - The Bonfida Development Guide</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="01_Getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="02_Writing_a_program.html"><strong aria-hidden="true">2.</strong> Writing a program</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.01_Encoding_state.html"><strong aria-hidden="true">2.1.</strong> Encoding state</a></li><li class="chapter-item expanded "><a href="02.02_VestingContract.html"><strong aria-hidden="true">2.2.</strong> Writing state: VestingContract</a></li><li class="chapter-item expanded "><a href="02.03_Instruction_create.html"><strong aria-hidden="true">2.3.</strong> Writing an instruction: create</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.01_Required_accounts.html" class="active"><strong aria-hidden="true">2.3.1.</strong> Required Accounts</a></li><li class="chapter-item expanded "><a href="02.03.02_Parameters.html"><strong aria-hidden="true">2.3.2.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="02.03.03_Instruction_logic.html"><strong aria-hidden="true">2.3.3.</strong> Instruction Logic</a></li><li class="chapter-item expanded "><a href="02.03.04_Instruction_create_patch.html"><strong aria-hidden="true">2.3.4.</strong> Patching a vulnerability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.04.01_Instruction_data.html"><strong aria-hidden="true">2.3.4.1.</strong> Instruction data</a></li><li class="chapter-item expanded "><a href="02.03.04.02_Account_data.html"><strong aria-hidden="true">2.3.4.2.</strong> Account data</a></li><li class="chapter-item expanded "><a href="02.03.04.03_Implementing_checks_on_third-party_state.html"><strong aria-hidden="true">2.3.4.3.</strong> Checks on third-party state</a></li></ol></li><li class="chapter-item expanded "><a href="02.03.05_Conclusion.html"><strong aria-hidden="true">2.3.5.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="02.04_Instruction_claim.html"><strong aria-hidden="true">2.4.</strong> Writing an instruction: claim</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Setting up integration testing</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Examples</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> FAQ</div></li><li class="chapter-item expanded affix "><li class="part-title">Using Bonfida tools</li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> utils</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> autobindings</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> autodoc</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> benchviz</div></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Bonfida Development Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="required-accounts"><a class="header" href="#required-accounts">Required accounts</a></h1>
+<p>For our vesting contract, we need to know about:</p>
+<ul>
+<li>The eventual token receiver, so we'll need a <code>recipient</code> account.</li>
+<li>The account that will hold the <code>VestingContract</code> data, the <code>vesting_contract</code> account.
+We'll need this account to be writable <em>and</em> owned by our current program.</li>
+<li>The escrow vault, the <code>vault</code> account.
+We'll need this account to be writable since we're going to transfer funds into it.
+It needs to be owned by the <code>spl_token</code> program as well.</li>
+<li>The <code>spl_token_program</code> account, since we're going to be performing token transfers.</li>
+<li>The <code>source_tokens</code> account, which will need to be writable as well.</li>
+<li>The <code>source_tokens_owner</code> account, which we'll need as a signer to enable us to successfully transfer the tokens into our vault.</li>
+</ul>
+<p>The associated <code>Accounts</code> struct thus looks like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(InstructionsAccount)]
+pub struct Accounts&lt;'a, T&gt; {
+    /// SPL token program account
+    pub spl_token_program: &amp;'a T,
+
+    /// The account which will store the [`VestingContract`] data structure
+    #[cons(writable)]
+    pub vesting_contract: &amp;'a T,
+
+    /// The contract's escrow vault
+    #[cons(writable)]
+    pub vault: &amp;'a T,
+
+    #[cons(writable)]
+    /// The account currently holding the tokens to be vested
+    pub source_tokens: &amp;'a T,
+
+    #[cons(signer)]
+    /// The owner of the account currently holding the tokens to be vested
+    pub source_tokens_owner: &amp;'a T,
+
+    /// The eventual recipient of the vested tokens
+    pub recipient: &amp;'a T,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The first thing to notice is that the <code>Accounts</code> struct is generic over what we actually mean by what an <em>account</em> is.
+The reason why it is generic is to enable the same struct to be used with references to <code>Pubkey</code> objects when writing bindings, or <code>AccountInfo</code> objects when writing the instruction's logic.</p>
+<p>The <code>InstructionsAccount</code> trait is useful to auto-generate Rust instruction bindings, which we'll make use of later.
+This trait's automatic derivation may need annotations.
+This is where the <code>#[cons(signer)]</code> and <code>#[cons(writable)]</code> field attributes come in.
+In general, struct fields with the <code>InstructionsAccount</code> auto-derived trait can take a <code>#[cons(...)]</code> attribute.
+<code>cons</code> stands for <em>constraint</em>: we can require the account to be writable, to be a signer, or both.
+This gives the valid attributes <code>#[cons(signer)]</code>, <code>#[cons(writable)]</code>, <code>#[cons(signer, writable)]</code> and <code>#[cons(writable, signer)]</code>.</p>
+<p>We then need to implement a method to parse the <code>&amp;[AccountInfo]</code> slice into our <code>Accounts</code> struct.
+We will also use this method to perform rudimentary but <em>essential</em> security checks.
+You should understand the reason behind each check in order to familiarize yourself with basic security base practices when developing for Solana.</p>
+<pre><code class="language-rust noplayground">impl&lt;'a, 'b: 'a&gt; Accounts&lt;'a, AccountInfo&lt;'b&gt;&gt; {
+    pub fn parse(
+        accounts: &amp;'a [AccountInfo&lt;'b&gt;],
+        program_id: &amp;Pubkey,
+    ) -&gt; Result&lt;Self, ProgramError&gt; {
+        let accounts_iter = &amp;mut accounts.iter();
+        let accounts = Accounts {
+            spl_token_program: next_account_info(accounts_iter)?,
+            vesting_contract: next_account_info(accounts_iter)?,
+            vault: next_account_info(accounts_iter)?,
+            source_tokens: next_account_info(accounts_iter)?,
+            source_tokens_owner: next_account_info(accounts_iter)?,
+            recipient: next_account_info(accounts_iter)?,
+        };
+
+        // Check keys
+        check_account_key(accounts.spl_token_program, &amp;spl_token::ID)?;
+
+        // Check owners
+        check_account_owner(accounts.vesting_contract, program_id)?;
+        check_account_owner(accounts.vault, &amp;spl_token::ID)?;
+        check_account_owner(accounts.source_tokens, &amp;spl_token::ID)?;
+
+        // Check signer
+        check_signer(accounts.source_tokens_owner)?;
+
+        Ok(accounts)
+    }
+}
+</code></pre>
+<p>The first part of this method will always be quite similar.
+However, the second part is where we can already protect ourselves against quite a few basic attacks (you would be surprised how many programs have been attacked for failing to perform these basic kinds of checks).
+These checks are also the first thing an auditor will look for, and having them all in the same place facilitates their work.
+Sometimes even auditors can get confused when these checks are not displayed obviously enough!</p>
+<h2 id="checks"><a class="header" href="#checks">Checks</a></h2>
+<p>Let's go through these checks one by one and explain why they are all here.
+You won't need to necessarily think too deeply about these checks when writing your own programs, you should just ask yourself: how can I constrain these accounts as much as possible using the rudimentary <code>check_signer</code>, <code>check_account_owner</code> and <code>check_account_key</code> security primitives?
+As a general rule of thumb, the tighter the constraint, the smaller the attack surface.</p>
+<pre><code class="language-rust noplayground">check_account_key(accounts.spl_token_program, &amp;spl_token::ID)?;
+</code></pre>
+<p>This check is essential. We'll be performing token transfers using this program and we need to be sure that we're actually calling the right program.
+An attacker could substitute their own program here and leverage the <code>source_tokens_owner</code> signature to take ownership of the token account!</p>
+<pre><code class="language-rust noplayground">check_account_owner(accounts.vesting_contract, program_id)?;
+</code></pre>
+<p>We're going to be editing the <code>vesting_contract</code> account data, and we need to be sure that <em>only our program</em> can alter this data.
+The Solana runtime constraints ensure that every byte of a program-owned account's data is either:</p>
+<ul>
+<li>determined by the program's logic</li>
+<li>freshly allocated and therefore 0
+This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
+Failing to perform this check will expose our programs to all sorts of potential attacks.</li>
+</ul>
+<p>In reality our program's logic should already make this check redundant: the <code>VestingContract::initialize</code> method will either attempt to modify the account's data (which is only possible when it is owned by the current program), or just fail.
+Does this mean we should remove this check?
+<em>Absolutely not.</em>
+Our program's logic might change in the future, and we don't want this metaphorical sword of Damocles to hang over our heads.
+These checks are computationally inexpensive, and extremely valuable.
+<em>Overuse</em> them.</p>
+<pre><code class="language-rust noplayground">check_account_owner(accounts.vault, &amp;spl_token::ID)?;
+check_account_owner(accounts.source_tokens, &amp;spl_token::ID)?;
+</code></pre>
+<p>and</p>
+<pre><code class="language-rust noplayground">check_signer(accounts.source_tokens_owner)?;
+</code></pre>
+<p>Technically unnecessary since the call to <code>spl_token_program</code> will take care of these for us.
+Don't even <em>think</em> about removing those.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="02.03_Instruction_create.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="02.03.02_Parameters.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="02.03_Instruction_create.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="02.03.02_Parameters.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

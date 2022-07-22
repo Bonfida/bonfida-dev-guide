@@ -1,0 +1,460 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Account data - The Bonfida Development Guide</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="01_Getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="02_Writing_a_program.html"><strong aria-hidden="true">2.</strong> Writing a program</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.01_Encoding_state.html"><strong aria-hidden="true">2.1.</strong> Encoding state</a></li><li class="chapter-item expanded "><a href="02.02_VestingContract.html"><strong aria-hidden="true">2.2.</strong> Writing state: VestingContract</a></li><li class="chapter-item expanded "><a href="02.03_Instruction_create.html"><strong aria-hidden="true">2.3.</strong> Writing an instruction: create</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.01_Required_accounts.html"><strong aria-hidden="true">2.3.1.</strong> Required Accounts</a></li><li class="chapter-item expanded "><a href="02.03.02_Parameters.html"><strong aria-hidden="true">2.3.2.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="02.03.03_Instruction_logic.html"><strong aria-hidden="true">2.3.3.</strong> Instruction Logic</a></li><li class="chapter-item expanded "><a href="02.03.04_Instruction_create_patch.html"><strong aria-hidden="true">2.3.4.</strong> Patching a vulnerability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.04.01_Instruction_data.html"><strong aria-hidden="true">2.3.4.1.</strong> Instruction data</a></li><li class="chapter-item expanded "><a href="02.03.04.02_Account_data.html" class="active"><strong aria-hidden="true">2.3.4.2.</strong> Account data</a></li><li class="chapter-item expanded "><a href="02.03.04.03_Implementing_checks_on_third-party_state.html"><strong aria-hidden="true">2.3.4.3.</strong> Checks on third-party state</a></li></ol></li><li class="chapter-item expanded "><a href="02.03.05_Conclusion.html"><strong aria-hidden="true">2.3.5.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="02.04_Instruction_claim.html"><strong aria-hidden="true">2.4.</strong> Writing an instruction: claim</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Setting up integration testing</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Examples</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> FAQ</div></li><li class="chapter-item expanded affix "><li class="part-title">Using Bonfida tools</li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> utils</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> autobindings</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> autodoc</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> benchviz</div></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Bonfida Development Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="account-data"><a class="header" href="#account-data">Account data</a></h1>
+<p>The hardest attack vector to secure is an instruction's accounts.
+The first step in securing this attack vector is to follow our account checks recommendations detailed in the previous section.
+The second and hardest step is to look at account data itself.</p>
+<p>Broadly speaking, your program will interact with two kinds of accounts:</p>
+<ul>
+<li>Accounts which it owns (and are therefore part of its own state)</li>
+<li>Accounts owned by other programs</li>
+</ul>
+<h2 id="thinking-about-your-programs-state"><a class="header" href="#thinking-about-your-programs-state">Thinking about your program's state</a></h2>
+<p>To secure the first type of accounts, a simple but very effective strategy is to use account tags.
+In the Bonfida style, the first 8 bytes of any account are reserved as a descriptor of <em>what kind</em> of account we're dealing with.
+If your program's logic allows for the closing of accounts, a closed account's tag should be set to a <code>Disabled</code> value.
+This makes sure that those accounts can't be used as an attack vector.</p>
+<p>Outside of this notion of account tagging, the safety of an account owned by your own program depends on the safety of your <em>entire business logic</em>.
+This is due to the fact that a program-owned account's data is either just zeros or the result of your program's previous interactions with it.
+This means that whenever your program modifies an account's data (or its state in general), you should make sure that the state remains safe in all situations.
+To deal with theses kinds of vulnerabilities, a clear coding style and proper reviews and even audits are your friends.</p>
+<p>Finally, we have accounts owned by other programs.
+More often than not, depending on an other program's accounts means depending on this program's own safety.
+Always think twice before integrating new on-chain dependencies into your projects:</p>
+<ul>
+<li>Is the program well reviewed and audited?</li>
+<li>Is the program widely used?</li>
+<li>If the program is upgradable, can the team behind it be trusted?</li>
+<li>Do you have a good understanding of the program and its safety guarantees?</li>
+</ul>
+<p>In the case of our <code>token-vesting</code> contract, we depend on the <code>spl-token</code> program.
+Since this program is part of the official Solana Program Library, and has been around for a while now, we can assume that it's quite safe.
+This ticks off the first three requirements.
+However, the final point stands: we need to gain an understanding of this program's security guarantees before we can use it in good conscience.
+As it just so happens, our program is currently vulnerable because we don't look at what's inside the <code>vault</code> spl-token account.</p>
+<h2 id="understanding-your-on-chain-dependencies-spl-token"><a class="header" href="#understanding-your-on-chain-dependencies-spl-token">Understanding your on-chain dependencies: <code>spl-token</code></a></h2>
+<p>Since on-chain programs are security-critical applications, it is essential to take the time to read through the official documentation.
+It often contains security recommentations and can provide you with a better idea of what you are dealing with.
+In the case of <code>spl-token</code>, the documentation can be found <a href="https://spl.solana.com/token">here</a>.
+Since we are going to be using the smart contract's bindings, we should take a look at the library documentation as well.
+It can be found <a href="https://docs.rs/spl-token/latest/spl_token/index.html">here</a>.</p>
+<p>When using an on-chain dependency, we should gain a deep understanding of the interface we are going to be using.
+A program's interface has two components :</p>
+<ul>
+<li>Its instruction specification (what is encoded in <code>instruction_data</code>)</li>
+<li>Its state, and how it is encoded into accounts</li>
+</ul>
+<h3 id="instruction-specification"><a class="header" href="#instruction-specification">Instruction specification</a></h3>
+<p>We're using <code>spl-token</code>'s <code>transfer</code> instruction.
+Let's take a look at the associated binding's documentation <a href="https://docs.rs/spl-token/latest/spl_token/instruction/fn.transfer.html">here</a>.
+This is what it looks like as of writing this :</p>
+<pre><code class="language-rust noplayground">/// Creates a Transfer instruction.
+pub fn transfer(
+    token_program_id: &amp;Pubkey, 
+    source_pubkey: &amp;Pubkey, 
+    destination_pubkey: &amp;Pubkey, 
+    authority_pubkey: &amp;Pubkey, 
+    signer_pubkeys: &amp;[&amp;Pubkey], 
+    amount: u64
+) -&gt; Result&lt;Instruction, ProgramError&gt;
+</code></pre>
+<p>Ah, the documentation is quite lackluster.
+Looking at the binding's signature already gives us a bit of information.
+However, we want to know as much as possible about this instruction.
+We have several options here:</p>
+<ul>
+<li>Find some documentation elsewhere</li>
+<li>Read the instruction code</li>
+</ul>
+<p>As a general rule of thumb, there's a pretty straightforward way to find the documentation we need elsewhere.
+For some reason, program developers are more often than not given less documentation than frontend ones.
+Maybe it's because program development is <em>supposed</em> to be harder?
+Really I don't know, and I would encourage any program developer to always think about both web clients and other programs as interfaces to tailor for.
+I sincerely hope you're reading this and finding this paragraph outdated.
+In the meantime, we can get the information we <em>deserve</em> by looking at the JavaScript/TypeScript documentation <a href="https://solana-labs.github.io/solana-program-library/token/js/modules.html#transfer">here</a>.
+This is what it roughly looks like:</p>
+<blockquote>
+Transfer tokens from one account to another
+<h4 style="margin-top: 4px; margin-bottom: 3px">Parameters</h4>
+<ul>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            connection:
+            <span style="font-weight:normal">
+                <i>Connection</i>
+            </span>
+        </h4>
+        Connection to use
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            payer:
+            <span style="font-weight:normal">
+                <i>Signer</i>
+            </span>
+        </h4>
+        Payer of the transaction fees
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            source:
+            <span style="font-weight:normal">
+                <i>PublicKey</i>
+            </span>
+        </h4>
+        Source account
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            destination:
+            <span style="font-weight:normal">
+                <i>PublicKey</i>
+            </span>
+        </h4>
+        Destination account
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            owner:
+            <span style="font-weight:normal">
+                <i>PublicKey | Signer</i>
+            </span>
+        </h4>
+        Owner of the source account
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            amount:
+            <span style="font-weight:normal">
+                <i>number | bigint</i>
+            </span>
+        </h4>
+        Number of tokens to transfer
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            multiSigners:
+            <span style="font-weight:normal">
+                <i>Signer</i>[] = []
+            </span>
+        </h4>
+        Signing accounts if owner is a multisig
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            <span style="display: inline-block;padding: 1px 5px;border-radius: 4px;color: rgb(47, 49, 54);background-color: rgb(220, 221, 222);text-indent: 0;font-weight: normal;"> Optional</span> confirmOptions:
+            <span style="font-weight:normal">
+                <i>Signer</i>[] = []
+            </span>
+        </h4>
+        Options for confirming the transaction
+    </li>
+    <li>
+        <h4 style="margin-bottom: 0px; margin-top: 3px">
+            programId:
+            <span style="font-weight:normal">
+                <i>PublicKey</i> = TOKEN_PROGRAM_ID
+            </span>
+        </h4>
+        SPL Token program account
+    </li>
+</ul>
+<h4 style="margin-bottom: 4px">
+    Returns
+    <span style="font-weight:normal">
+        <i>Promise&ltTransactionSignature&gt</i>
+    </span>
+</h4>
+Signature of the confirmed transaction
+</blockquote>
+<p>We get more information here.
+Let's not care about any parameter mentioned here which isn't part of our Rust binding's signature.
+This eliminates <code>connection</code> and <code>confirmOptions</code> from consideration.
+In general, you should make sure that you understand every option, because it's the only way to determine what's important.</p>
+<p>Using this knowledge, we can annotate the Rust binding for our particular use-case: transfering funds to a vault:</p>
+<pre><code class="language-rust noplayground">/// Creates a Transfer instruction.
+pub fn transfer(
+    /// This will be spl_token::ID since we're using the common spl_token instance
+    token_program_id: &amp;Pubkey, 
+    /// This will be the key of the provided account currently holding the tokens to vest
+    source_pubkey: &amp;Pubkey, 
+    /// Our vesting contract's vault key
+    destination_pubkey: &amp;Pubkey, 
+    /// The owner of the source token account's key
+    authority_pubkey: &amp;Pubkey, 
+    /// We won't support vesting tokens from a multisig source account.
+    /// This will be an empty array.
+    signer_pubkeys: &amp;[&amp;Pubkey], 
+    /// The total quantity of tokens to vest
+    amount: u64
+) -&gt; Result&lt;Instruction, ProgramError&gt;
+</code></pre>
+<p>We're quite lucky here: the existing call to <code>transfer</code> is correct in our <code>create</code> instruction!</p>
+<h3 id="account-specification"><a class="header" href="#account-specification">Account specification</a></h3>
+<p>Our <code>create</code> instruction takes several <code>spl_token</code>-owned program accounts as input.
+We should therefore understand what kind of accounts we should expect here.
+Using the library documentation, we find that <code>spl_token</code>'s accounts are all defined in a <code>state</code> module <a href="https://docs.rs/spl-token/latest/spl_token/state/index.html">here</a>.
+Out of all the different types of state defined by <code>spl_token</code>, we're only interested in the <code>Account</code> type.
+This is because we're only using program accounts which <em>hold</em> tokens.</p>
+<p>Let's take a look at the definition of <code>spl_token::state::Account</code>:</p>
+<pre><code class="language-rust noplayground">pub struct Account {
+    /// The mint associated with this account
+    pub mint: Pubkey,
+    /// The owner of this account.
+    pub owner: Pubkey,
+    /// The amount of tokens this account holds.
+    pub amount: u64,
+    /// If `delegate` is `Some` then `delegated_amount` represents
+    /// the amount authorized by the delegate
+    pub delegate: COption&lt;Pubkey&gt;,
+    /// The account's state
+    pub state: AccountState,
+    /// If is_native.is_some, this is a native token, and the value logs the rent-exempt reserve. An
+    /// Account is required to be rent-exempt, so the value is used by the Processor to ensure that
+    /// wrapped SOL accounts do not drop below this threshold.
+    pub is_native: COption&lt;u64&gt;,
+    /// The amount delegated
+    pub delegated_amount: u64,
+    /// Optional authority to close the account.
+    pub close_authority: COption&lt;Pubkey&gt;,
+}
+</code></pre>
+<p>Here we find that every field is properly documented, which will definitely make our job easier!
+The next step is to go through each field and think about <em>constraints</em>.
+How can we use each field to constrain our input accounts as much as possible?
+I have annotated the same struct definition to see what kind of constraints we could enforce.</p>
+<pre><code class="language-rust noplayground">pub struct Account {
+    /// The mint associated with this account
+    // We could check that our vault and destination mints match
+    // However, we know that the spl_token program itself will perform this check
+    pub mint: Pubkey, 
+    /// The owner of this account.
+    // Our vault should be owned by an account controlled by our program!
+    // Otherwise the transfer we perform to our vault creates a fake contract
+    // since our program cannot control the vault's funds!
+    pub owner: Pubkey,
+    /// The amount of tokens this account holds.
+    // We expect our vault to be empty, so let's make sure.
+    pub amount: u64,
+    /// If `delegate` is `Some` then `delegated_amount` represents
+    /// the amount authorized by the delegate
+    // Our vault should not have a delegate authority.
+    pub delegate: COption&lt;Pubkey&gt;,
+    /// The account's state
+    // The account should be Initialized
+    pub state: AccountState,
+    /// If is_native.is_some, this is a native token, and the value logs the rent-exempt reserve. An
+    /// Account is required to be rent-exempt, so the value is used by the Processor to ensure that
+    /// wrapped SOL accounts do not drop below this threshold.
+    // Not caring about this makes our token vesting contract support wrapped SOL.
+    pub is_native: COption&lt;u64&gt;,
+    /// The amount delegated
+    // This should be 0, but we're already enforcing the delegate field to be None
+    pub delegated_amount: u64,
+    /// Optional authority to close the account.
+    // This should absolutely be None for our vault.
+    // It should be impossible for a third-party to close our vault account.
+    pub close_authority: COption&lt;Pubkey&gt;,
+}
+</code></pre>
+<p>Looking at the <code>Account</code> struct, we were able to gain a clearer picture of what we should expect from our <code>vault</code> account.
+Note that we're mostly focusing on enforcing constraints on the vault account here.
+The other token account at play in our <code>create</code> instruction only has to emit the tokens.
+We can trust this simple constraint to be enforced by <code>spl_token</code> itself when we call the <code>transfer</code> instruction.</p>
+<p>However, our vault account will remain tied to our vesting contract instance for the entirety of its lifetime.
+We must therefore make sure that we're getting <em>precisely</em> we need here.
+Our vault account can be thought of as a piece of <em>third-party state</em> for our program.
+This is why we need to understand it as well as we understand our program's own state.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="02.03.04.01_Instruction_data.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="02.03.04.03_Implementing_checks_on_third-party_state.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="02.03.04.01_Instruction_data.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="02.03.04.03_Implementing_checks_on_third-party_state.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

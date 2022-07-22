@@ -1,0 +1,518 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Writing state: VestingContract - The Bonfida Development Guide</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="01_Getting_started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="02_Writing_a_program.html"><strong aria-hidden="true">2.</strong> Writing a program</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.01_Encoding_state.html"><strong aria-hidden="true">2.1.</strong> Encoding state</a></li><li class="chapter-item expanded "><a href="02.02_VestingContract.html" class="active"><strong aria-hidden="true">2.2.</strong> Writing state: VestingContract</a></li><li class="chapter-item expanded "><a href="02.03_Instruction_create.html"><strong aria-hidden="true">2.3.</strong> Writing an instruction: create</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.01_Required_accounts.html"><strong aria-hidden="true">2.3.1.</strong> Required Accounts</a></li><li class="chapter-item expanded "><a href="02.03.02_Parameters.html"><strong aria-hidden="true">2.3.2.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="02.03.03_Instruction_logic.html"><strong aria-hidden="true">2.3.3.</strong> Instruction Logic</a></li><li class="chapter-item expanded "><a href="02.03.04_Instruction_create_patch.html"><strong aria-hidden="true">2.3.4.</strong> Patching a vulnerability</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02.03.04.01_Instruction_data.html"><strong aria-hidden="true">2.3.4.1.</strong> Instruction data</a></li><li class="chapter-item expanded "><a href="02.03.04.02_Account_data.html"><strong aria-hidden="true">2.3.4.2.</strong> Account data</a></li><li class="chapter-item expanded "><a href="02.03.04.03_Implementing_checks_on_third-party_state.html"><strong aria-hidden="true">2.3.4.3.</strong> Checks on third-party state</a></li></ol></li><li class="chapter-item expanded "><a href="02.03.05_Conclusion.html"><strong aria-hidden="true">2.3.5.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="02.04_Instruction_claim.html"><strong aria-hidden="true">2.4.</strong> Writing an instruction: claim</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Setting up integration testing</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Examples</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> FAQ</div></li><li class="chapter-item expanded affix "><li class="part-title">Using Bonfida tools</li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> utils</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> autobindings</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.</strong> autodoc</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">8.</strong> benchviz</div></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Bonfida Development Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="vestingcontract"><a class="header" href="#vestingcontract">VestingContract</a></h1>
+<p>The core data structure on which we are building our program will be called <code>VestingContract</code>.
+Since we will be using type-casting through the <code>bytemuck</code> library, we need to iterate and think about the various types of constraints our definition will need to obey.</p>
+<h2 id="first-iteration-what-data-do-we-need"><a class="header" href="#first-iteration-what-data-do-we-need">First iteration: what data do we need?</a></h2>
+<p>Our program's logic will need something equivalent to the following data structure.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct VestingContract {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    /// Describes the token release schedule
+    pub schedule: Vec&lt;VestingSchedule&gt;
+}
+
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>In our freshly created project, let's start by renaming the <code>src/state/example_state_cast.rs</code> to <code>src/state/vesting_contract.rs</code>.
+We'll also delete the <code>src/state/example_state_borsh.rs</code> file.
+Hopefully our IDE will take care of the refactor.
+Let's then refactor the <code>ExampleStateCast</code> struct to <code>VestingContract</code> and paste in the above definitions.</p>
+<p>We should be left with something like this:</p>
+<pre><code class="language-rust noplayground">#[derive(Clone, Copy, Zeroable, Pod)]
+#[allow(missing_docs)]
+#[repr(C)]
+pub struct VestingContract {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    /// Describes the token release schedule
+    pub schedule: Vec&lt;VestingSchedule&gt;,
+}
+
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64,
+}
+</code></pre>
+<p>Since <code>VestingContract</code> implements the <code>Clone</code>, <code>Copy</code>, <code>Zeroable</code> and <code>Pod</code> traits we need to derive these traits for <code>VestingSchedule</code> as well.
+The last two traits are related to <code>bytemuck</code> and enable type casting.
+Same goes for the <code>repr(C)</code> atrribute which is essential for type casting.</p>
+<pre><pre class="playground"><code class="language-rust compile_fail"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Zeroable, Pod)]
+#[allow(missing_docs)]
+#[repr(C)]
+pub struct VestingContract {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    /// Describes the token release schedule
+    pub schedule: Vec&lt;VestingSchedule&gt;,
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>However, the above still does not compile. To sum up, the core bytemuck trait we are interested in is the <code>Pod</code> trait. This trait requires the <code>Zeroable</code> and <code>Copy</code> traits. However, a <code>Vec</code> does not implement the <code>Copy</code> trait. In general, this is due to the fact that <code>Vec</code> is a pointer which <em>owns</em> a section of heap memory. Copying it would mean allocating a new section of heap memory, whereas the <code>Copy</code> trait is reserved for variables which exist on the stack.</p>
+<p>In fact it is impossible to directly cast <code>Vec</code> objects.
+To work around this limitation, we split our object into a reference to a header and a reference to a slice of <code>VestingSchedule</code> objects.
+This means that the <code>VestingContract</code> object will hold cast references to the underlying objects, instead of being a direct cast by itself.
+This layer of indirection is of no consequence in terms of performance, and allows us a lot more flexibility in terms of the kind of data structures we can type cast.</p>
+<h2 id="second-iteration-fixing-our-definitions"><a class="header" href="#second-iteration-fixing-our-definitions">Second Iteration: fixing our definitions</a></h2>
+<p>We begin by renaming the <code>VestingContract</code> object into <code>VestingContractHeader</code>, removing the schedules from it:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone, Copy, Zeroable, Pod)]
+#[allow(missing_docs)]
+#[repr(C)]
+pub struct VestingContractHeader {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    pub _padding: [u8; 7],
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+pub struct VestingSchedule {
+    pub unlock_timestamp: u64,
+    pub quantity: u64,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Ah, and we also added an extra field called <code>_padding</code>.
+This is where using directly type-cast data structures can seem daunting at first.
+Let's take some time to talk about memory alignment.</p>
+<h3 id="an-aside-on-padding-and-memory-alignment"><a class="header" href="#an-aside-on-padding-and-memory-alignment">An aside on padding and memory alignment</a></h3>
+<p>Modern CPUs are wonderful things which are able to manipulate all kinds of objects.
+In practice, every operation which a CPU can execute (also called an assembly instruction), <em>is</em> actual physical wiring on the chip.
+Depending on the chip, designers can cut down on complexity and conversely increase performance by requiring data to be aligned in a certain way.
+As a somewhat appropriate analogy, let's take a list of five 8-letter words:</p>
+<pre><code class="language-text">although
+boundary
+calendar
+chemical
+diameter
+</code></pre>
+<p>Providing a CPU with non-aligned data is akin to presenting you the same list in this way:</p>
+<pre><code class="language-text">although
+       boundary
+   calendar
+                chemical
+ diameter
+</code></pre>
+<p>It's just harder to parse, because our ability to parse lists of words is <em>hard-wired</em> to a certain format.
+So let's give our poor CPUs a break and look at alignment constraints on the <code>BPF</code> architecture.</p>
+<p>For any memory address, we say that it is aligned to <code>n</code> if its address is a multiple of <code>n</code>.
+On the Solana BPF (the on-chain program runtime) and <code>x86_64</code> architectures, alignment constraints are as follows:</p>
+<ul>
+<li>Primitive types must be aligned to their size, up to a maximum of 8.</li>
+<li>Structs must be aligned to the maximum of their fields' alignment constraints.</li>
+</ul>
+<p>For primitive types, this yields the following table:</p>
+<div class="table-wrapper"><table><thead><tr><th>Primitive Type</th><th>Size (in bytes)</th><th>Alignment constraint</th></tr></thead><tbody>
+<tr><td><code>u8</code>, <code>i8</code></td><td>1</td><td>1</td></tr>
+<tr><td><code>u16</code>, <code>i16</code></td><td>2</td><td>2</td></tr>
+<tr><td><code>u32</code>, <code>i32</code></td><td>4</td><td>4</td></tr>
+<tr><td><code>u64</code>, <code>i64</code></td><td>8</td><td>8</td></tr>
+<tr><td><code>u128</code>, <code>i128</code></td><td>16</td><td>8</td></tr>
+</tbody></table>
+</div>
+<p>When the runtime provides you with an account, the address of its first byte can be considered to be 0.
+The first 8 bytes are going to be used by the account or instruction tag, which is encoded as a <code>u64</code>.
+We would be tempted to use a <code>u8</code> here, but this would make the rest of the buffer start aligned to 1, which precludes all but the most basic types.</p>
+<p>On the <code>BPF</code> architecture, being 8-aligned is essentially equivalent to being 0-aligned.
+Fortunately, this is also the case on the common <code>x86_64</code> architecture.
+Unfortunately, the apple ARM architecture (i.e. Apple M1, M2, etc.) can sometimes ask for an alignment of 16.
+To get around this, we can use a compilation flag to replace every instance of a type-cast <code>u128</code> by a <code>[u64;2]</code>.
+Even if you don't own an Apple ARM computer, it is important to think about members of the community that do.
+We will discuss how to tackle this issue in an annex.</p>
+<p>So looking at our <code>VestingContractHeader</code> object, we can see that it contains a <code>u64</code> field.
+This means that its size has to be a multiple of 8, which is why we add 7 bytes of padding.
+In practice, these will be implicitly 0 and won't be used by any of our program logic.
+As a nice bonus, if you later want to add a new field to the object, you'll be able to do so while maintaing backwards compatibility!</p>
+<h3 id="final-definition"><a class="header" href="#final-definition">Final definition</a></h3>
+<p>We then define our <code>VestingContract</code> object.
+You should notice that since <code>VestingContract</code> holds references, it has a generic lifetime argument.
+While this can seem daunting, it will not affect its use.
+<code>bonfida-utils</code> can help us out here by automatically deriving the <code>WrappedPodMut</code> trait.
+This trait is specifically designed for objects which hold references to <code>Pod</code> objects which are contiguous in memory.</p>
+<pre><code class="language-rust noplayground">#[derive(WrappedPodMut)]
+pub struct VestingContract&lt;'a&gt; {
+    pub header: &amp;'a mut VestingContractHeader,
+    pub schedules: &amp;'a mut [VestingSchedule],
+}
+</code></pre>
+<p>The <code>impl</code> blocks are refactored in the following manner:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl VestingContractHeader {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+impl VestingSchedule {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+/// An example PDA state, serialized using Borsh //TODO
+#[allow(missing_docs)]
+impl&lt;'contract&gt; VestingContract&lt;'contract&gt; {
+...
+<span class="boring">}
+</span><span class="boring">}
+</span></code></pre></pre>
+<p>What remains is to update <code>VestingContract</code>'s <code>initialize</code> and <code>from_buffer</code> method.
+The first step in doing so is to refactor the <code>super::Tag::ExampleStateCast</code> object to <code>super::Tag::VestingContract</code>.
+Doing so finalizes the <code>initialize</code> method: its only role is to write the account's tag into the first 8 bytes of the data buffer.
+Tags are incredibly important to ensure that an account is being interpreted correctly: we wouldn't want an attacker to substitute one type of account for another.
+This is a way of implementing runtime type checks on all accounts to decrease our program's attack surface.</p>
+<p>The <code>initialize</code> method also checks that the account has not been initialized before.
+This gives us a double guarantee: that we're not attempting to corrupt/overwrite existing data, and that the entire account's data is zeroed out.</p>
+<p>Finally, we need to fix the <code>from_buffer</code> method. The first 4 lines of the method do not need to be changed. The correct implementation is as follows:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    pub fn from_buffer(
+        // We use the `contract lifetime here since our VestingContract
+        // is a set of cast references to this buffer
+        buffer: &amp;'contract mut [u8],
+        expected_tag: super::Tag,
+        // Since we're using a wrapper of references, we return Self
+        // and not &amp;mut Self
+    ) -&gt; Result&lt;Self, TokenVestingError&gt; {
+        let (tag, buffer) = buffer.split_at_mut(8);
+        if *bytemuck::from_bytes_mut::&lt;u64&gt;(tag) != expected_tag as u64 {
+            return Err(TokenVestingError::DataTypeMismatch.into());
+        }
+        // The WrappedPodMut trait does all the heavy lifting here
+        Ok(Self::from_bytes(buffer))
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<p>One important thing to know is that we're casting the <em>entire length</em> of the buffer.
+This means that the account's allocated length <em>must</em> be of a valid size, otherwise this operation will fail.</p>
+<!-- An alternative approach would be to add a `number_of_schedules` field to our `VestingContractHeader`, and then `split_at_mut` the `schedules` buffer again at `number_of_schedules * VestingSchedule::LEN`. -->
+<p>To make this less error-prone, we need to write a helper static method called <code>compute_allocation_size</code> which determines the valid size for a <code>VestingContract</code> data account in terms of its desired number of schedules:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    pub fn compute_allocation_size(number_of_schedules: usize) -&gt; usize {
+        8 + VestingContractHeader::LEN + number_of_schedules * VestingSchedule::LEN
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<p>You should note that we're always adding 8 bytes to account for the type tag.</p>
+<p><code>find_key</code> is the last method we need to take a look at. This method is useful when we want our account's address to be uniquely determined by a set of parameters. For instance, if we wanted to allow for only one vesting contract per recipient, we could write <code>find_key</code> as</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    pub fn find_key(program_id: &amp;Pubkey, recipient: &amp;Pubkey) -&gt; (Pubkey, u8) {
+        let seeds: &amp;[&amp;[u8]] = &amp;[Self::SEED, &amp;recipient.to_bytes()];
+        Pubkey::find_program_address(seeds, program_id)
+    }
+<span class="boring">}
+</span></code></pre></pre>
+<p>This means that our vesting contract would be a unique program-derived address (PDA).
+However, in our case, we do not want to add this constraint since any user can hold several vesting contracts.
+This is why we won't be using a PDA here, and we can just delete the <code>find_key</code> method and its associated <code>SEED</code> constant.</p>
+<p>If you have been following along, your <code>src/state/vesting_contract.rs</code> file should look something like this:</p>
+<pre><code class="language-rust noplayground">use bonfida_utils::WrappedPodMut;
+use bytemuck::{Pod, Zeroable};
+use solana_program::pubkey::Pubkey;
+
+use crate::error::TokenVestingError;
+
+#[derive(WrappedPodMut)]
+pub struct VestingContract&lt;'a&gt; {
+    pub header: &amp;'a mut VestingContractHeader,
+    pub schedules: &amp;'a mut [VestingSchedule],
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+/// Holds vesting contract metadata
+pub struct VestingContractHeader {
+    /// The eventual token receiver
+    pub owner: Pubkey,
+    /// The contract escrow vault
+    pub vault: Pubkey,
+    /// Index in the current schedule vector of the last completed schedule
+    pub current_schedule_index: u64,
+    /// Used to generate the signing PDA which owns the vault
+    pub signer_nonce: u8,
+    pub _padding: [u8; 7],
+}
+
+#[derive(Clone, Copy, Zeroable, Pod)]
+#[repr(C)]
+/// An item of the vesting schedule
+pub struct VestingSchedule {
+    /// When the unlock happens as a UTC timestamp
+    pub unlock_timestamp: u64,
+    /// The quantity of tokens to unlock from the vault
+    pub quantity: u64,
+}
+
+impl VestingContractHeader {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+impl VestingSchedule {
+    pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
+}
+
+impl&lt;'contract&gt; VestingContract&lt;'contract&gt; {
+    /// Initialize a new VestingContract data account
+    pub fn initialize(buffer: &amp;mut [u8]) -&gt; Result&lt;(), TokenVestingError&gt; {
+        let (tag, _) = buffer.split_at_mut(8);
+        let tag: &amp;mut u64 = bytemuck::from_bytes_mut(tag);
+        if *tag != super::Tag::Uninitialized as u64 {
+            return Err(TokenVestingError::DataTypeMismatch);
+        }
+        *tag = super::Tag::VestingContract as u64;
+        Ok(())
+    }
+
+    /// Cast the buffer as a VestingContract reference wrapper
+    pub fn from_buffer(
+        buffer: &amp;'contract mut [u8],
+        expected_tag: super::Tag,
+    ) -&gt; Result&lt;Self, TokenVestingError&gt; {
+        let (tag, buffer) = buffer.split_at_mut(8);
+        if *bytemuck::from_bytes_mut::&lt;u64&gt;(tag) != expected_tag as u64 {
+            return Err(TokenVestingError::DataTypeMismatch);
+        }
+        Ok(Self::from_bytes(buffer))
+    }
+
+    /// Compute a valid allocation size for a VestingContract
+    pub fn compute_allocation_size(number_of_schedules: usize) -&gt; usize {
+        8 + VestingContractHeader::LEN + number_of_schedules * VestingSchedule::LEN
+    }
+}
+
+
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="02.01_Encoding_state.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="02.03_Instruction_create.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="02.01_Encoding_state.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="02.03_Instruction_create.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
