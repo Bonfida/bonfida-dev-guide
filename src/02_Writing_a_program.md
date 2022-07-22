@@ -5,9 +5,9 @@ This will enable us to better understand how to write programs using the bonfida
 
 ## What we are trying to create
 
-Our token vesting program will be a simple solution to a common problem. 
+Our token vesting program will be a simple solution to a common problem.
 Given a supply of tokens, how can we use on-chain logic to distribute those tokens to investors while making sure that those tokens cannot be used until a predetermined delay, or _schedule_?
-The basic idea is that we use an on-chain program (or _smart contract_) to hold the funds and gradually _unlock_ those. 
+The basic idea is that we use an on-chain program (or _smart contract_) to hold the funds and gradually _unlock_ those.
 This allows the whole transaction to be completely trustless: the claimers can trust in the fact that they _will_ receive those tokens on the agreed-upon schedule, and the providers can trust in the fact that the claimers will not bypass the vesting schedule.
 In this context, the program acts as a trusted third-party.
 
@@ -18,7 +18,7 @@ We call those operations the program's _instructions_.
 - `create` will initialize a vesting contract for a given quantity of a particular token, with a set schedule.
 - `claim` will transfer unlocked funds from a particular vesting contract to its receiver.
 
-The last thing we need is a way for the program to hold state. 
+The last thing we need is a way for the program to hold state.
 This means that we need a program to _remember_ the active vesting contracts and to hold their associated funds.
 In order to hold the vested assets, each token vesting contract has an associated vault.
 A vault is a normal token account which is owned by an associated _PDA_, more on that later.
@@ -48,7 +48,7 @@ pub struct VestingSchedule {
 }
 ```
 
-In reality, we will define the `VestingContract` object quite differently in order to greatly optimize its on-chain serialization and deserialization. This will allow us to handle arbitrarily complex vesting schedules while never running out of compute budget. Thus, the actual `VestingContract` object will be defined in the following way: 
+In reality, we will define the `VestingContract` object quite differently in order to greatly optimize its on-chain serialization and deserialization. This will allow us to handle arbitrarily complex vesting schedules while never running out of compute budget. Thus, the actual `VestingContract` object will be defined in the following way:
 
 ```rust
 pub struct VestingContract<'a> {
@@ -70,5 +70,5 @@ pub struct VestingSchedule {
     pub quantity: u64
 }
 ```
-    
+
 We will explore where this added complexity comes from, and why it's actually worth it.

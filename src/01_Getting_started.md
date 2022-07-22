@@ -4,7 +4,7 @@
 
 Installing the Bonfida tool suite is quite straightforward.
 
-```
+```bash
 cargo install --git https://github.com/Bonfida/bonfida-utils.git cli
 ```
 
@@ -17,7 +17,7 @@ In order to update the tool, just re-run the above command.
 
 To initialize a new project _my-project_ in the current directory, we use the following command:
 
-```
+```bash
 bonfida autoproject my-project
 cd my-project
 ```
@@ -25,7 +25,8 @@ cd my-project
 ## Overview of project structure
 
 Each new project is a sort of monorepo containing three folders
-```
+
+```bash
 ├── js
 ├── program
 └── python
@@ -39,7 +40,7 @@ Each new project is a sort of monorepo containing three folders
 
 The summary below describes the basic structure of the program's files, as well as their individual purpose.
 
-```
+```text
 program                               
 ├── Cargo.toml                       
 ├── src                              
@@ -82,8 +83,8 @@ program
 |   | 
 │   └── state.rs                     # Contains general utilities related to state 
 |                                      accounts. Includes the main registry of account 
-|                                      types for this program: the Tag enum
-|
+| types for this program: the Tag enum |
+|--------------------------------------|
 └── tests                            # Contains integration tests
     |
     ├── common                       # Contains common integration testing utilities
@@ -95,4 +96,3 @@ program
 
 
 ```
-
