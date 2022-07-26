@@ -33,8 +33,8 @@ Each new project is a sort of monorepo containing three folders
 ```
 
 - The `js` folder is used to build JavaScript bindings for the current project.
-- The `program` folder contains the on-chain Solana program
-- The `python` folder contains Python bindings
+- The `program` folder contains the on-chain Solana program.
+- The `python` folder contains Python bindings.
 
 ### The program
 
@@ -45,7 +45,7 @@ program
 ├── Cargo.toml                       
 ├── src                              
 │   ├── cpi.rs                       
-│   ├── entrypoint.rs                # Boilerplate for the solana program's entrypoint
+│   ├── entrypoint.rs                # Boilerplate for the Solana program's entrypoint
 |   |
 │   ├── error.rs                     # Custom errors for the program. Varied and 
 |   |                                  descriptive errors should be preferred!

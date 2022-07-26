@@ -3,7 +3,7 @@
 As Bonfida devs, we have been writing Solana programs for some time now. 
 As a result, we have come to cultivate a particular _code style_. 
 This systematic approach to writing Solana programs has enabled us to write programs faster, with no sacrifice to their security.
-If anything, being systematic abour our programs has made them _safer_ and easier to audit.
+If anything, being systematic about our programs has made them _safer_ and easier to audit.
 
 Our approach is based on several key principles:
 - We don't use frameworks, and this is not quite a framework: critical program logic should never be hidden away behind macros.
