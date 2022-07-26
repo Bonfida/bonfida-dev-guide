@@ -65,7 +65,7 @@ program
 |   |                                  follows a strict template to optimize ease of 
 |   |                                  audit and general readability.
 |   |
-│   ├── processor.rs                 # The processor itelf is a dispatcher for all 
+│   ├── processor.rs                 # The processor itself is a dispatcher for all 
 |   |                                  instructions. The program entrypoint directly 
 |   |                                  calls the processor.
 |   |
