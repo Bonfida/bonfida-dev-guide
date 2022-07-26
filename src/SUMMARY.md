@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD007 -->
+<!-- markdownlint-disable MD042 -->
 # Summary
 
 [Introduction](README.md)
