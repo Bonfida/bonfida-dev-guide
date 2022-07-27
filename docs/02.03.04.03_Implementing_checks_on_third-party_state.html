@@ -149,7 +149,7 @@ This is where program-derived addresses (PDAs) come into play.</p>
 <p>PDAs are Solana's solution for a recurring generic problem in program design : how can our program <em>own</em> anything of value?
 Conventionally, owning an asset on a blockchain means controlling a private key the public key of which is set as its <em>owner</em>.
 Then, users can sign transactions to authorize operations on assets they own.
-They key to all of this is that the private key is only known to its owner.</p>
+The key to all of this is that the private key is only known to its owner.</p>
 <p>Sometimes, we need a program to own something in the same way that a user does.
 However, any information a program has access to is available to anyone, so we can't really give a private key to our program.
 What we need is a public key which isn't tied to a private key, but instead to a particular program.
@@ -164,7 +164,7 @@ We call this <code>u8</code> the <code>signer_nonce</code>.</p>
 <p>We can relate the two methods:</p>
 <pre><code class="language-rust noplayground">let seeds: &amp;[u8] = &amp;[...];
 let (k, nonce) = Pubkey::find_program_address(&amp;[seeds], program_id).unwrap();
-let k2 = Pubkey::create_program_ddress(&amp;[seeds, &amp;[signer_nonce]]).unwrap();
+let k2 = Pubkey::create_program_address(&amp;[seeds, &amp;[signer_nonce]]).unwrap();
 // k and k2 will be the same
 assert_eq!(k, k2);
 </code></pre>
@@ -181,7 +181,7 @@ The runtime can then make sure that the PDA to sign for corresponds to those see
 <p>To add a layer of security, we want our vesting contract instances to be as compartmentalized as possible.
 Therefore, we will use the <code>VestingContract</code> key as seeds.
 Each instance already has its own vault, and this allows each contract to have its own separate signing authority.
-The altenative to this is related to the idea of <em>central state</em>, which can be required by some use cases and is supported by <code>bonfida-utils</code>.</p>
+The alternative to this is related to the idea of <em>central state</em>, which can be required by some use cases and is supported by <code>bonfida-utils</code>.</p>
 <h2 id="writing-the-check_vault_account-method"><a class="header" href="#writing-the-check_vault_account-method">Writing the <code>check_vault_account</code> method</a></h2>
 <p>Using the constraints we came up with by analyzing the <code>spl_token::Account</code> struct, we can add to <code>create.rs</code>:</p>
 <pre><code class="language-rust noplayground">fn check_vault_account(
@@ -207,7 +207,7 @@ The altenative to this is related to the idea of <em>central state</em>, which c
 }
 </code></pre>
 <p>If the provided vault account is invalid, we return the custom <code>InvalidVaultAccount</code> error.
-Let's define it in <code>error.rs</code> by modifyin the <code>TokenVestingError</code> struct:</p>
+Let's define it in <code>error.rs</code> by modifying the <code>TokenVestingError</code> struct:</p>
 <pre><code class="language-rust noplayground">#[derive(Clone, Debug, Error, FromPrimitive)]
 pub enum TokenVestingError {
     #[error(&quot;This account is already initialized&quot;)]

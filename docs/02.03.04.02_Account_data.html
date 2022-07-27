@@ -148,8 +148,8 @@ The first step in securing this attack vector is to follow our account checks re
 The second and hardest step is to look at account data itself.</p>
 <p>Broadly speaking, your program will interact with two kinds of accounts:</p>
 <ul>
-<li>Accounts which it owns (and are therefore part of its own state)</li>
-<li>Accounts owned by other programs</li>
+<li>Accounts which it owns (and are therefore part of its own state).</li>
+<li>Accounts owned by other programs.</li>
 </ul>
 <h2 id="thinking-about-your-programs-state"><a class="header" href="#thinking-about-your-programs-state">Thinking about your program's state</a></h2>
 <p>To secure the first type of accounts, a simple but very effective strategy is to use account tags.
@@ -159,7 +159,7 @@ This makes sure that those accounts can't be used as an attack vector.</p>
 <p>Outside of this notion of account tagging, the safety of an account owned by your own program depends on the safety of your <em>entire business logic</em>.
 This is due to the fact that a program-owned account's data is either just zeros or the result of your program's previous interactions with it.
 This means that whenever your program modifies an account's data (or its state in general), you should make sure that the state remains safe in all situations.
-To deal with theses kinds of vulnerabilities, a clear coding style and proper reviews and even audits are your friends.</p>
+To deal with these kinds of vulnerabilities, a clear coding style and proper reviews and even audits are your friends.</p>
 <p>Finally, we have accounts owned by other programs.
 More often than not, depending on an other program's accounts means depending on this program's own safety.
 Always think twice before integrating new on-chain dependencies into your projects:</p>
@@ -176,7 +176,7 @@ However, the final point stands: we need to gain an understanding of this progra
 As it just so happens, our program is currently vulnerable because we don't look at what's inside the <code>vault</code> spl-token account.</p>
 <h2 id="understanding-your-on-chain-dependencies-spl-token"><a class="header" href="#understanding-your-on-chain-dependencies-spl-token">Understanding your on-chain dependencies: <code>spl-token</code></a></h2>
 <p>Since on-chain programs are security-critical applications, it is essential to take the time to read through the official documentation.
-It often contains security recommentations and can provide you with a better idea of what you are dealing with.
+It often contains security recommendations and can provide you with a better idea of what you are dealing with.
 In the case of <code>spl-token</code>, the documentation can be found <a href="https://spl.solana.com/token">here</a>.
 Since we are going to be using the smart contract's bindings, we should take a look at the library documentation as well.
 It can be found <a href="https://docs.rs/spl-token/latest/spl_token/index.html">here</a>.</p>
@@ -203,10 +203,10 @@ pub fn transfer(
 <p>Ah, the documentation is quite lackluster.
 Looking at the binding's signature already gives us a bit of information.
 However, we want to know as much as possible about this instruction.
-We have several options here:</p>
+We have several options here :</p>
 <ul>
-<li>Find some documentation elsewhere</li>
-<li>Read the instruction code</li>
+<li>Find some documentation elsewhere.</li>
+<li>Read the instruction code.</li>
 </ul>
 <p>As a general rule of thumb, there's a pretty straightforward way to find the documentation we need elsewhere.
 For some reason, program developers are more often than not given less documentation than frontend ones.
@@ -215,6 +215,7 @@ Really I don't know, and I would encourage any program developer to always think
 I sincerely hope you're reading this and finding this paragraph outdated.
 In the meantime, we can get the information we <em>deserve</em> by looking at the JavaScript/TypeScript documentation <a href="https://solana-labs.github.io/solana-program-library/token/js/modules.html#transfer">here</a>.
 This is what it roughly looks like:</p>
+<!-- markdownlint-disable MD033 -->
 <blockquote>
 Transfer tokens from one account to another
 <h4 style="margin-top: 4px; margin-bottom: 3px">Parameters</h4>
@@ -309,11 +310,12 @@ Transfer tokens from one account to another
 </h4>
 Signature of the confirmed transaction
 </blockquote>
+<!-- markdownlint-disable MD037 -->
 <p>We get more information here.
 Let's not care about any parameter mentioned here which isn't part of our Rust binding's signature.
 This eliminates <code>connection</code> and <code>confirmOptions</code> from consideration.
 In general, you should make sure that you understand every option, because it's the only way to determine what's important.</p>
-<p>Using this knowledge, we can annotate the Rust binding for our particular use-case: transfering funds to a vault:</p>
+<p>Using this knowledge, we can annotate the Rust binding for our particular use-case: transferring funds to a vault:</p>
 <pre><code class="language-rust noplayground">/// Creates a Transfer instruction.
 pub fn transfer(
     /// This will be spl_token::ID since we're using the common spl_token instance
@@ -404,7 +406,7 @@ Note that we're mostly focusing on enforcing constraints on the vault account he
 The other token account at play in our <code>create</code> instruction only has to emit the tokens.
 We can trust this simple constraint to be enforced by <code>spl_token</code> itself when we call the <code>transfer</code> instruction.</p>
 <p>However, our vault account will remain tied to our vesting contract instance for the entirety of its lifetime.
-We must therefore make sure that we're getting <em>precisely</em> we need here.
+We must therefore make sure that we're getting <em>precisely</em> what we need here.
 Our vault account can be thought of as a piece of <em>third-party state</em> for our program.
 This is why we need to understand it as well as we understand our program's own state.</p>
 

@@ -147,7 +147,8 @@
 Since we will be using type-casting through the <code>bytemuck</code> library, we need to iterate and think about the various types of constraints our definition will need to obey.</p>
 <h2 id="first-iteration-what-data-do-we-need"><a class="header" href="#first-iteration-what-data-do-we-need">First iteration: what data do we need?</a></h2>
 <p>Our program's logic will need something equivalent to the following data structure.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct VestingContract {
     /// The eventual token receiver
@@ -196,8 +197,9 @@ pub struct VestingSchedule {
 </code></pre>
 <p>Since <code>VestingContract</code> implements the <code>Clone</code>, <code>Copy</code>, <code>Zeroable</code> and <code>Pod</code> traits we need to derive these traits for <code>VestingSchedule</code> as well.
 The last two traits are related to <code>bytemuck</code> and enable type casting.
-Same goes for the <code>repr(C)</code> atrribute which is essential for type casting.</p>
-<pre><pre class="playground"><code class="language-rust compile_fail"><span class="boring">#![allow(unused)]
+Same goes for the <code>repr(C)</code> attribute which is essential for type casting.</p>
+<pre><pre class="playground"><code class="language-rust compile_fail">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Clone, Copy, Zeroable, Pod)]
 #[allow(missing_docs)]
@@ -230,7 +232,8 @@ This means that the <code>VestingContract</code> object will hold cast reference
 This layer of indirection is of no consequence in terms of performance, and allows us a lot more flexibility in terms of the kind of data structures we can type cast.</p>
 <h2 id="second-iteration-fixing-our-definitions"><a class="header" href="#second-iteration-fixing-our-definitions">Second Iteration: fixing our definitions</a></h2>
 <p>We begin by renaming the <code>VestingContract</code> object into <code>VestingContractHeader</code>, removing the schedules from it:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Clone, Copy, Zeroable, Pod)]
 #[allow(missing_docs)]
@@ -285,27 +288,26 @@ On the Solana BPF (the on-chain program runtime) and <code>x86_64</code> archite
 <li>Structs must be aligned to the maximum of their fields' alignment constraints.</li>
 </ul>
 <p>For primitive types, this yields the following table:</p>
-<div class="table-wrapper"><table><thead><tr><th>Primitive Type</th><th>Size (in bytes)</th><th>Alignment constraint</th></tr></thead><tbody>
+<table><thead><tr><th>Primitive Type</th><th>Size (in bytes)</th><th>Alignment constraint</th></tr></thead><tbody>
 <tr><td><code>u8</code>, <code>i8</code></td><td>1</td><td>1</td></tr>
 <tr><td><code>u16</code>, <code>i16</code></td><td>2</td><td>2</td></tr>
 <tr><td><code>u32</code>, <code>i32</code></td><td>4</td><td>4</td></tr>
 <tr><td><code>u64</code>, <code>i64</code></td><td>8</td><td>8</td></tr>
 <tr><td><code>u128</code>, <code>i128</code></td><td>16</td><td>8</td></tr>
 </tbody></table>
-</div>
 <p>When the runtime provides you with an account, the address of its first byte can be considered to be 0.
 The first 8 bytes are going to be used by the account or instruction tag, which is encoded as a <code>u64</code>.
 We would be tempted to use a <code>u8</code> here, but this would make the rest of the buffer start aligned to 1, which precludes all but the most basic types.</p>
 <p>On the <code>BPF</code> architecture, being 8-aligned is essentially equivalent to being 0-aligned.
 Fortunately, this is also the case on the common <code>x86_64</code> architecture.
-Unfortunately, the apple ARM architecture (i.e. Apple M1, M2, etc.) can sometimes ask for an alignment of 16.
+Unfortunately, the Apple ARM architecture (i.e. Apple M1, M2, etc.) can sometimes ask for an alignment of 16.
 To get around this, we can use a compilation flag to replace every instance of a type-cast <code>u128</code> by a <code>[u64;2]</code>.
 Even if you don't own an Apple ARM computer, it is important to think about members of the community that do.
 We will discuss how to tackle this issue in an annex.</p>
 <p>So looking at our <code>VestingContractHeader</code> object, we can see that it contains a <code>u64</code> field.
 This means that its size has to be a multiple of 8, which is why we add 7 bytes of padding.
 In practice, these will be implicitly 0 and won't be used by any of our program logic.
-As a nice bonus, if you later want to add a new field to the object, you'll be able to do so while maintaing backwards compatibility!</p>
+As a nice bonus, if you later want to add a new field to the object, you'll be able to do so while maintaining backwards compatibility!</p>
 <h3 id="final-definition"><a class="header" href="#final-definition">Final definition</a></h3>
 <p>We then define our <code>VestingContract</code> object.
 You should notice that since <code>VestingContract</code> holds references, it has a generic lifetime argument.
@@ -319,7 +321,8 @@ pub struct VestingContract&lt;'a&gt; {
 }
 </code></pre>
 <p>The <code>impl</code> blocks are refactored in the following manner:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl VestingContractHeader {
     pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
@@ -344,7 +347,8 @@ This is a way of implementing runtime type checks on all accounts to decrease ou
 <p>The <code>initialize</code> method also checks that the account has not been initialized before.
 This gives us a double guarantee: that we're not attempting to corrupt/overwrite existing data, and that the entire account's data is zeroed out.</p>
 <p>Finally, we need to fix the <code>from_buffer</code> method. The first 4 lines of the method do not need to be changed. The correct implementation is as follows:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>    pub fn from_buffer(
         // We use the `contract lifetime here since our VestingContract
@@ -367,7 +371,8 @@ This gives us a double guarantee: that we're not attempting to corrupt/overwrite
 This means that the account's allocated length <em>must</em> be of a valid size, otherwise this operation will fail.</p>
 <!-- An alternative approach would be to add a `number_of_schedules` field to our `VestingContractHeader`, and then `split_at_mut` the `schedules` buffer again at `number_of_schedules * VestingSchedule::LEN`. -->
 <p>To make this less error-prone, we need to write a helper static method called <code>compute_allocation_size</code> which determines the valid size for a <code>VestingContract</code> data account in terms of its desired number of schedules:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>    pub fn compute_allocation_size(number_of_schedules: usize) -&gt; usize {
         8 + VestingContractHeader::LEN + number_of_schedules * VestingSchedule::LEN
@@ -376,7 +381,8 @@ This means that the account's allocated length <em>must</em> be of a valid size,
 </span></code></pre></pre>
 <p>You should note that we're always adding 8 bytes to account for the type tag.</p>
 <p><code>find_key</code> is the last method we need to take a look at. This method is useful when we want our account's address to be uniquely determined by a set of parameters. For instance, if we wanted to allow for only one vesting contract per recipient, we could write <code>find_key</code> as</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>    pub fn find_key(program_id: &amp;Pubkey, recipient: &amp;Pubkey) -&gt; (Pubkey, u8) {
         let seeds: &amp;[&amp;[u8]] = &amp;[Self::SEED, &amp;recipient.to_bytes()];

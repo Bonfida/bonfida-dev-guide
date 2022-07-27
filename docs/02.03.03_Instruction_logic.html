@@ -143,7 +143,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="instruction-logic"><a class="header" href="#instruction-logic">Instruction Logic</a></h1>
-<p>Our entry point into the instruction is always a function <code>process</code> with the following signature</p>
+<p>Our entry point into the instruction is always a <code>process</code> function with the following signature:</p>
 <pre><code class="language-rust noplayground">pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: Params) -&gt; ProgramResult {
     ...
 }
@@ -171,7 +171,7 @@ We can start by checking that the given account is of the correct size:</p>
 <p>A refinement to this program would involve taking care of the allocation ourselves, thus making sure that the supplied account will be of the correct size.
 However, as long as we supply our users with bindings which can take care of this allocation, this is not really an issue.
 Allocating an account within a program is only required when allocating Program-Derived Addresses (PDAs).
-As discused earlied, this is not a concern here.</p>
+As discussed earlier, this is not a concern here.</p>
 <p>Once we have verified that the account is properly sized, we can actually initialize our <code>VestingContract</code> account, and then retrieve it!</p>
 <pre><code class="language-rust noplayground">// This guard variable is the owned pointer to our actual data
 // Once it goes out of scope (or is dropped), all its dependent references are dropped
@@ -207,7 +207,7 @@ Using checked math is <em>absolutely essential</em>.
 Sometimes it might seem redundant.
 Sometimes it might actually be redundant.
 But it's better to think about it this way: if it <em>can</em> overflow, it <em>will</em> overflow.
-<em>Dont' even think about it!</em></p>
+<em>Don't even think about it!</em></p>
 <p>The only exception to this rule is <code>checked_div</code> when dividing by a constant.
 If you know it to be non-zero because it says so on the same line of code, then you should favor readability.</p>
 <p>We also check that the schedules are given in the right order with <code>last_timestamp</code>.

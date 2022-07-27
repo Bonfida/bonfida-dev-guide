@@ -144,17 +144,17 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p>As Bonfida devs, we have been writing Solana programs for some time now. 
-As a result, we have come to cultivate a particular <em>code style</em>. 
+<p>As Bonfida devs, we have been writing Solana programs for some time now.
+As a result, we have come to cultivate a particular <em>code style</em>.
 This systematic approach to writing Solana programs has enabled us to write programs faster, with no sacrifice to their security.
-If anything, being systematic abour our programs has made them <em>safer</em> and easier to audit.</p>
+If anything, being systematic about our programs has made them <em>safer</em> and easier to audit.</p>
 <p>Our approach is based on several key principles:</p>
 <ul>
 <li>We don't use frameworks, and this is not quite a framework: critical program logic should never be hidden away behind macros.</li>
 <li>Security checks should always be obvious.</li>
 <li>Redundant security and safety checks are better than implicit ones.</li>
 </ul>
-<p>This book is intended as a guide to what we have come to define internally as the <em>Bonfida style</em>. 
+<p>This book is intended as a guide to what we have come to define internally as the <em>Bonfida style</em>.
 As we learn new and better ways to write programs, it will necessarily evolve.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <h2 id="installing-the-bonfida-tool-suite"><a class="header" href="#installing-the-bonfida-tool-suite">Installing the Bonfida tool suite</a></h2>
@@ -177,8 +177,8 @@ cd my-project
 </code></pre>
 <ul>
 <li>The <code>js</code> folder is used to build JavaScript bindings for the current project.</li>
-<li>The <code>program</code> folder contains the on-chain Solana program</li>
-<li>The <code>python</code> folder contains Python bindings</li>
+<li>The <code>program</code> folder contains the on-chain Solana program.</li>
+<li>The <code>python</code> folder contains Python bindings.</li>
 </ul>
 <h3 id="the-program"><a class="header" href="#the-program">The program</a></h3>
 <p>The summary below describes the basic structure of the program's files, as well as their individual purpose.</p>
@@ -186,7 +186,7 @@ cd my-project
 ├── Cargo.toml                       
 ├── src                              
 │   ├── cpi.rs                       
-│   ├── entrypoint.rs                # Boilerplate for the solana program's entrypoint
+│   ├── entrypoint.rs                # Boilerplate for the Solana program's entrypoint
 |   |
 │   ├── error.rs                     # Custom errors for the program. Varied and 
 |   |                                  descriptive errors should be preferred!
@@ -206,7 +206,7 @@ cd my-project
 |   |                                  follows a strict template to optimize ease of 
 |   |                                  audit and general readability.
 |   |
-│   ├── processor.rs                 # The processor itelf is a dispatcher for all 
+│   ├── processor.rs                 # The processor itself is a dispatcher for all 
 |   |                                  instructions. The program entrypoint directly 
 |   |                                  calls the processor.
 |   |
@@ -259,7 +259,8 @@ In order to hold the vested assets, each token vesting contract has an associate
 A vault is a normal token account which is owned by an associated <em>PDA</em>, more on that later.</p>
 <p>Each vesting contract will thus have an associated state account owned by our program.
 These accounts will hold a serialized version of a <code>VestingContract</code> object:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct VestingContract {
     /// The eventual token receiver
@@ -283,7 +284,8 @@ pub struct VestingSchedule {
 <span class="boring">}
 </span></code></pre></pre>
 <p>In reality, we will define the <code>VestingContract</code> object quite differently in order to greatly optimize its on-chain serialization and deserialization. This will allow us to handle arbitrarily complex vesting schedules while never running out of compute budget. Thus, the actual <code>VestingContract</code> object will be defined in the following way:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct VestingContract&lt;'a&gt; {
     pub header: &amp;'a mut VestingContractHeader,
@@ -321,7 +323,7 @@ This approach has several advantages:</p>
 <ul>
 <li>Packed representation: this representation is quite space-efficient.</li>
 <li>Easier to write bindings in languages other than Rust.</li>
-<li>No constraint on memory alignment and padding</li>
+<li>No constraint on memory alignment and padding.</li>
 </ul>
 <p>The main disadvantage posed by Borsh is that the serialization and deserialization operations have to iterate through the entire data slice, and perform copy operations.
 This means that this approach is impractical for larger data structures and can consume a substantial amount of the available compute budget.</p>
@@ -339,14 +341,15 @@ This is an extremely error-prone approach.</p>
 <li>Certain types have to be aligned to particular offsets.</li>
 <li>Object sizes must be a multiple of their own alignment constraint.</li>
 </ul>
-<p>While working with theses kinds of abstract constraints can seem quite daunting, <code>bytemuck</code> provides us with convenient derive macros which are able to detect these issues before compilation. By looking at an example, we'll see how these constraints come into play, and how we can deal with them.</p>
+<p>While working with these kinds of abstract constraints can seem quite daunting, <code>bytemuck</code> provides us with convenient derive macros which are able to detect these issues before compilation. By looking at an example, we'll see how these constraints come into play, and how we can deal with them.</p>
 <p>Finally, once our data structure is well-defined to play along with <code>bytemuck</code>, we can write a compatible <code>borsh</code> schema to leverage its implementations across various programming languages.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="vestingcontract"><a class="header" href="#vestingcontract">VestingContract</a></h1>
 <p>The core data structure on which we are building our program will be called <code>VestingContract</code>.
 Since we will be using type-casting through the <code>bytemuck</code> library, we need to iterate and think about the various types of constraints our definition will need to obey.</p>
 <h2 id="first-iteration-what-data-do-we-need"><a class="header" href="#first-iteration-what-data-do-we-need">First iteration: what data do we need?</a></h2>
 <p>Our program's logic will need something equivalent to the following data structure.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct VestingContract {
     /// The eventual token receiver
@@ -395,8 +398,9 @@ pub struct VestingSchedule {
 </code></pre>
 <p>Since <code>VestingContract</code> implements the <code>Clone</code>, <code>Copy</code>, <code>Zeroable</code> and <code>Pod</code> traits we need to derive these traits for <code>VestingSchedule</code> as well.
 The last two traits are related to <code>bytemuck</code> and enable type casting.
-Same goes for the <code>repr(C)</code> atrribute which is essential for type casting.</p>
-<pre><pre class="playground"><code class="language-rust compile_fail"><span class="boring">#![allow(unused)]
+Same goes for the <code>repr(C)</code> attribute which is essential for type casting.</p>
+<pre><pre class="playground"><code class="language-rust compile_fail">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Clone, Copy, Zeroable, Pod)]
 #[allow(missing_docs)]
@@ -429,7 +433,8 @@ This means that the <code>VestingContract</code> object will hold cast reference
 This layer of indirection is of no consequence in terms of performance, and allows us a lot more flexibility in terms of the kind of data structures we can type cast.</p>
 <h2 id="second-iteration-fixing-our-definitions"><a class="header" href="#second-iteration-fixing-our-definitions">Second Iteration: fixing our definitions</a></h2>
 <p>We begin by renaming the <code>VestingContract</code> object into <code>VestingContractHeader</code>, removing the schedules from it:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(Clone, Copy, Zeroable, Pod)]
 #[allow(missing_docs)]
@@ -484,27 +489,26 @@ On the Solana BPF (the on-chain program runtime) and <code>x86_64</code> archite
 <li>Structs must be aligned to the maximum of their fields' alignment constraints.</li>
 </ul>
 <p>For primitive types, this yields the following table:</p>
-<div class="table-wrapper"><table><thead><tr><th>Primitive Type</th><th>Size (in bytes)</th><th>Alignment constraint</th></tr></thead><tbody>
+<table><thead><tr><th>Primitive Type</th><th>Size (in bytes)</th><th>Alignment constraint</th></tr></thead><tbody>
 <tr><td><code>u8</code>, <code>i8</code></td><td>1</td><td>1</td></tr>
 <tr><td><code>u16</code>, <code>i16</code></td><td>2</td><td>2</td></tr>
 <tr><td><code>u32</code>, <code>i32</code></td><td>4</td><td>4</td></tr>
 <tr><td><code>u64</code>, <code>i64</code></td><td>8</td><td>8</td></tr>
 <tr><td><code>u128</code>, <code>i128</code></td><td>16</td><td>8</td></tr>
 </tbody></table>
-</div>
 <p>When the runtime provides you with an account, the address of its first byte can be considered to be 0.
 The first 8 bytes are going to be used by the account or instruction tag, which is encoded as a <code>u64</code>.
 We would be tempted to use a <code>u8</code> here, but this would make the rest of the buffer start aligned to 1, which precludes all but the most basic types.</p>
 <p>On the <code>BPF</code> architecture, being 8-aligned is essentially equivalent to being 0-aligned.
 Fortunately, this is also the case on the common <code>x86_64</code> architecture.
-Unfortunately, the apple ARM architecture (i.e. Apple M1, M2, etc.) can sometimes ask for an alignment of 16.
+Unfortunately, the Apple ARM architecture (i.e. Apple M1, M2, etc.) can sometimes ask for an alignment of 16.
 To get around this, we can use a compilation flag to replace every instance of a type-cast <code>u128</code> by a <code>[u64;2]</code>.
 Even if you don't own an Apple ARM computer, it is important to think about members of the community that do.
 We will discuss how to tackle this issue in an annex.</p>
 <p>So looking at our <code>VestingContractHeader</code> object, we can see that it contains a <code>u64</code> field.
 This means that its size has to be a multiple of 8, which is why we add 7 bytes of padding.
 In practice, these will be implicitly 0 and won't be used by any of our program logic.
-As a nice bonus, if you later want to add a new field to the object, you'll be able to do so while maintaing backwards compatibility!</p>
+As a nice bonus, if you later want to add a new field to the object, you'll be able to do so while maintaining backwards compatibility!</p>
 <h3 id="final-definition"><a class="header" href="#final-definition">Final definition</a></h3>
 <p>We then define our <code>VestingContract</code> object.
 You should notice that since <code>VestingContract</code> holds references, it has a generic lifetime argument.
@@ -518,7 +522,8 @@ pub struct VestingContract&lt;'a&gt; {
 }
 </code></pre>
 <p>The <code>impl</code> blocks are refactored in the following manner:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl VestingContractHeader {
     pub const LEN: usize = std::mem::size_of::&lt;Self&gt;();
@@ -543,7 +548,8 @@ This is a way of implementing runtime type checks on all accounts to decrease ou
 <p>The <code>initialize</code> method also checks that the account has not been initialized before.
 This gives us a double guarantee: that we're not attempting to corrupt/overwrite existing data, and that the entire account's data is zeroed out.</p>
 <p>Finally, we need to fix the <code>from_buffer</code> method. The first 4 lines of the method do not need to be changed. The correct implementation is as follows:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>    pub fn from_buffer(
         // We use the `contract lifetime here since our VestingContract
@@ -566,7 +572,8 @@ This gives us a double guarantee: that we're not attempting to corrupt/overwrite
 This means that the account's allocated length <em>must</em> be of a valid size, otherwise this operation will fail.</p>
 <!-- An alternative approach would be to add a `number_of_schedules` field to our `VestingContractHeader`, and then `split_at_mut` the `schedules` buffer again at `number_of_schedules * VestingSchedule::LEN`. -->
 <p>To make this less error-prone, we need to write a helper static method called <code>compute_allocation_size</code> which determines the valid size for a <code>VestingContract</code> data account in terms of its desired number of schedules:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>    pub fn compute_allocation_size(number_of_schedules: usize) -&gt; usize {
         8 + VestingContractHeader::LEN + number_of_schedules * VestingSchedule::LEN
@@ -575,7 +582,8 @@ This means that the account's allocated length <em>must</em> be of a valid size,
 </span></code></pre></pre>
 <p>You should note that we're always adding 8 bytes to account for the type tag.</p>
 <p><code>find_key</code> is the last method we need to take a look at. This method is useful when we want our account's address to be uniquely determined by a set of parameters. For instance, if we wanted to allow for only one vesting contract per recipient, we could write <code>find_key</code> as</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>    pub fn find_key(program_id: &amp;Pubkey, recipient: &amp;Pubkey) -&gt; (Pubkey, u8) {
         let seeds: &amp;[&amp;[u8]] = &amp;[Self::SEED, &amp;recipient.to_bytes()];
@@ -670,11 +678,11 @@ The next step is to write our program's one of two main primitives: <code>create
 <p>We'll start by renaming the <code>src/processor/example_instr.rs</code> file to <code>create.rs</code>.
 Similarly we'll rename the <code>ExampleInstr</code> variant of the <code>instruction::ProgramInstruction</code> enum to <code>Create</code>, and the <code>instruction::example</code> binding to <code>create</code>.
 We should also alter the log message in <code>processor.rs</code> from <code>&quot;Instruction: Example Instruction&quot;</code> to <code>&quot;Instruction: Create&quot;</code>, and update the instruction comment at the top of <code>create.rs</code> to <code>//! Create a new token vesting contract</code>.</p>
-<p>This primtive will perform several operations:</p>
+<p>This primitive will perform several operations:</p>
 <ul>
-<li>Initialize a new <code>VestingContract</code> account/object</li>
-<li>Configure the <code>VestingContract</code> with user-provided parameters</li>
-<li>Transfer funds into the program vault</li>
+<li>Initialize a new <code>VestingContract</code> account/object.</li>
+<li>Configure the <code>VestingContract</code> with user-provided parameters.</li>
+<li>Transfer funds into the program vault.</li>
 </ul>
 <p>An instruction's specification is defined by its <code>Accounts</code> and <code>Params</code> objects. Let's start by thinking about what kinds of accounts we'll need, and then we'll take a look at the associated parameters.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="required-accounts"><a class="header" href="#required-accounts">Required accounts</a></h1>
@@ -691,7 +699,8 @@ It needs to be owned by the <code>spl_token</code> program as well.</li>
 <li>The <code>source_tokens_owner</code> account, which we'll need as a signer to enable us to successfully transfer the tokens into our vault.</li>
 </ul>
 <p>The associated <code>Accounts</code> struct thus looks like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(InstructionsAccount)]
 pub struct Accounts&lt;'a, T&gt; {
@@ -777,11 +786,11 @@ An attacker could substitute their own program here and leverage the <code>sourc
 <p>We're going to be editing the <code>vesting_contract</code> account data, and we need to be sure that <em>only our program</em> can alter this data.
 The Solana runtime constraints ensure that every byte of a program-owned account's data is either:</p>
 <ul>
-<li>determined by the program's logic</li>
-<li>freshly allocated and therefore 0
-This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
-Failing to perform this check will expose our programs to all sorts of potential attacks.</li>
+<li>determined by the program's logic.</li>
+<li>freshly allocated and therefore 0.</li>
 </ul>
+<p>This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
+Failing to perform this check will expose our programs to all sorts of potential attacks.</p>
 <p>In reality our program's logic should already make this check redundant: the <code>VestingContract::initialize</code> method will either attempt to modify the account's data (which is only possible when it is owned by the current program), or just fail.
 Does this mean we should remove this check?
 <em>Absolutely not.</em>
@@ -822,7 +831,7 @@ pub fn create(accounts: create::Accounts&lt;Pubkey&gt;, params: create::Params) 
 <p>We will discuss why the <code>signer_nonce</code> parameter is required in a later section.
 In combination with the accounts defined above, we have all the information we need to begin writing the instruction logic!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="instruction-logic"><a class="header" href="#instruction-logic">Instruction Logic</a></h1>
-<p>Our entry point into the instruction is always a function <code>process</code> with the following signature</p>
+<p>Our entry point into the instruction is always a <code>process</code> function with the following signature:</p>
 <pre><code class="language-rust noplayground">pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: Params) -&gt; ProgramResult {
     ...
 }
@@ -850,7 +859,7 @@ We can start by checking that the given account is of the correct size:</p>
 <p>A refinement to this program would involve taking care of the allocation ourselves, thus making sure that the supplied account will be of the correct size.
 However, as long as we supply our users with bindings which can take care of this allocation, this is not really an issue.
 Allocating an account within a program is only required when allocating Program-Derived Addresses (PDAs).
-As discused earlied, this is not a concern here.</p>
+As discussed earlier, this is not a concern here.</p>
 <p>Once we have verified that the account is properly sized, we can actually initialize our <code>VestingContract</code> account, and then retrieve it!</p>
 <pre><code class="language-rust noplayground">// This guard variable is the owned pointer to our actual data
 // Once it goes out of scope (or is dropped), all its dependent references are dropped
@@ -886,7 +895,7 @@ Using checked math is <em>absolutely essential</em>.
 Sometimes it might seem redundant.
 Sometimes it might actually be redundant.
 But it's better to think about it this way: if it <em>can</em> overflow, it <em>will</em> overflow.
-<em>Dont' even think about it!</em></p>
+<em>Don't even think about it!</em></p>
 <p>The only exception to this rule is <code>checked_div</code> when dividing by a constant.
 If you know it to be non-zero because it says so on the same line of code, then you should favor readability.</p>
 <p>We also check that the schedules are given in the right order with <code>last_timestamp</code>.
@@ -943,7 +952,7 @@ Borsh and the tools provided by <code>bonfida-utils</code> <em>should</em> be en
 <p>The harder part is thinking about the business logic itself.
 You should think about what kind of values your program should allow as input.
 Be <em>as restrictive as possible</em>.
-If a user reports that their own use-case for your product is not handled due to theses restrictions, you can update your program.
+If a user reports that their own use-case for your product is not handled due to these restrictions, you can update your program.
 If your program's state / assets are compromised, you can still patch the vulnerability, but the incident will probably have cost you.</p>
 <p>To secure your program's business logic, we recommend a combination of unit and integration testing.
 It can be very useful to use coverage testing tools to make sure that your business logic is sound for every edge case.
@@ -954,8 +963,8 @@ The first step in securing this attack vector is to follow our account checks re
 The second and hardest step is to look at account data itself.</p>
 <p>Broadly speaking, your program will interact with two kinds of accounts:</p>
 <ul>
-<li>Accounts which it owns (and are therefore part of its own state)</li>
-<li>Accounts owned by other programs</li>
+<li>Accounts which it owns (and are therefore part of its own state).</li>
+<li>Accounts owned by other programs.</li>
 </ul>
 <h2 id="thinking-about-your-programs-state"><a class="header" href="#thinking-about-your-programs-state">Thinking about your program's state</a></h2>
 <p>To secure the first type of accounts, a simple but very effective strategy is to use account tags.
@@ -965,7 +974,7 @@ This makes sure that those accounts can't be used as an attack vector.</p>
 <p>Outside of this notion of account tagging, the safety of an account owned by your own program depends on the safety of your <em>entire business logic</em>.
 This is due to the fact that a program-owned account's data is either just zeros or the result of your program's previous interactions with it.
 This means that whenever your program modifies an account's data (or its state in general), you should make sure that the state remains safe in all situations.
-To deal with theses kinds of vulnerabilities, a clear coding style and proper reviews and even audits are your friends.</p>
+To deal with these kinds of vulnerabilities, a clear coding style and proper reviews and even audits are your friends.</p>
 <p>Finally, we have accounts owned by other programs.
 More often than not, depending on an other program's accounts means depending on this program's own safety.
 Always think twice before integrating new on-chain dependencies into your projects:</p>
@@ -982,7 +991,7 @@ However, the final point stands: we need to gain an understanding of this progra
 As it just so happens, our program is currently vulnerable because we don't look at what's inside the <code>vault</code> spl-token account.</p>
 <h2 id="understanding-your-on-chain-dependencies-spl-token"><a class="header" href="#understanding-your-on-chain-dependencies-spl-token">Understanding your on-chain dependencies: <code>spl-token</code></a></h2>
 <p>Since on-chain programs are security-critical applications, it is essential to take the time to read through the official documentation.
-It often contains security recommentations and can provide you with a better idea of what you are dealing with.
+It often contains security recommendations and can provide you with a better idea of what you are dealing with.
 In the case of <code>spl-token</code>, the documentation can be found <a href="https://spl.solana.com/token">here</a>.
 Since we are going to be using the smart contract's bindings, we should take a look at the library documentation as well.
 It can be found <a href="https://docs.rs/spl-token/latest/spl_token/index.html">here</a>.</p>
@@ -1009,10 +1018,10 @@ pub fn transfer(
 <p>Ah, the documentation is quite lackluster.
 Looking at the binding's signature already gives us a bit of information.
 However, we want to know as much as possible about this instruction.
-We have several options here:</p>
+We have several options here :</p>
 <ul>
-<li>Find some documentation elsewhere</li>
-<li>Read the instruction code</li>
+<li>Find some documentation elsewhere.</li>
+<li>Read the instruction code.</li>
 </ul>
 <p>As a general rule of thumb, there's a pretty straightforward way to find the documentation we need elsewhere.
 For some reason, program developers are more often than not given less documentation than frontend ones.
@@ -1021,6 +1030,7 @@ Really I don't know, and I would encourage any program developer to always think
 I sincerely hope you're reading this and finding this paragraph outdated.
 In the meantime, we can get the information we <em>deserve</em> by looking at the JavaScript/TypeScript documentation <a href="https://solana-labs.github.io/solana-program-library/token/js/modules.html#transfer">here</a>.
 This is what it roughly looks like:</p>
+<!-- markdownlint-disable MD033 -->
 <blockquote>
 Transfer tokens from one account to another
 <h4 style="margin-top: 4px; margin-bottom: 3px">Parameters</h4>
@@ -1115,11 +1125,12 @@ Transfer tokens from one account to another
 </h4>
 Signature of the confirmed transaction
 </blockquote>
+<!-- markdownlint-disable MD037 -->
 <p>We get more information here.
 Let's not care about any parameter mentioned here which isn't part of our Rust binding's signature.
 This eliminates <code>connection</code> and <code>confirmOptions</code> from consideration.
 In general, you should make sure that you understand every option, because it's the only way to determine what's important.</p>
-<p>Using this knowledge, we can annotate the Rust binding for our particular use-case: transfering funds to a vault:</p>
+<p>Using this knowledge, we can annotate the Rust binding for our particular use-case: transferring funds to a vault:</p>
 <pre><code class="language-rust noplayground">/// Creates a Transfer instruction.
 pub fn transfer(
     /// This will be spl_token::ID since we're using the common spl_token instance
@@ -1210,7 +1221,7 @@ Note that we're mostly focusing on enforcing constraints on the vault account he
 The other token account at play in our <code>create</code> instruction only has to emit the tokens.
 We can trust this simple constraint to be enforced by <code>spl_token</code> itself when we call the <code>transfer</code> instruction.</p>
 <p>However, our vault account will remain tied to our vesting contract instance for the entirety of its lifetime.
-We must therefore make sure that we're getting <em>precisely</em> we need here.
+We must therefore make sure that we're getting <em>precisely</em> what we need here.
 Our vault account can be thought of as a piece of <em>third-party state</em> for our program.
 This is why we need to understand it as well as we understand our program's own state.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="implementing-checks-on-third-party-state"><a class="header" href="#implementing-checks-on-third-party-state">Implementing checks on third-party state</a></h1>
@@ -1220,7 +1231,7 @@ This is where program-derived addresses (PDAs) come into play.</p>
 <p>PDAs are Solana's solution for a recurring generic problem in program design : how can our program <em>own</em> anything of value?
 Conventionally, owning an asset on a blockchain means controlling a private key the public key of which is set as its <em>owner</em>.
 Then, users can sign transactions to authorize operations on assets they own.
-They key to all of this is that the private key is only known to its owner.</p>
+The key to all of this is that the private key is only known to its owner.</p>
 <p>Sometimes, we need a program to own something in the same way that a user does.
 However, any information a program has access to is available to anyone, so we can't really give a private key to our program.
 What we need is a public key which isn't tied to a private key, but instead to a particular program.
@@ -1235,7 +1246,7 @@ We call this <code>u8</code> the <code>signer_nonce</code>.</p>
 <p>We can relate the two methods:</p>
 <pre><code class="language-rust noplayground">let seeds: &amp;[u8] = &amp;[...];
 let (k, nonce) = Pubkey::find_program_address(&amp;[seeds], program_id).unwrap();
-let k2 = Pubkey::create_program_ddress(&amp;[seeds, &amp;[signer_nonce]]).unwrap();
+let k2 = Pubkey::create_program_address(&amp;[seeds, &amp;[signer_nonce]]).unwrap();
 // k and k2 will be the same
 assert_eq!(k, k2);
 </code></pre>
@@ -1252,7 +1263,7 @@ The runtime can then make sure that the PDA to sign for corresponds to those see
 <p>To add a layer of security, we want our vesting contract instances to be as compartmentalized as possible.
 Therefore, we will use the <code>VestingContract</code> key as seeds.
 Each instance already has its own vault, and this allows each contract to have its own separate signing authority.
-The altenative to this is related to the idea of <em>central state</em>, which can be required by some use cases and is supported by <code>bonfida-utils</code>.</p>
+The alternative to this is related to the idea of <em>central state</em>, which can be required by some use cases and is supported by <code>bonfida-utils</code>.</p>
 <h2 id="writing-the-check_vault_account-method"><a class="header" href="#writing-the-check_vault_account-method">Writing the <code>check_vault_account</code> method</a></h2>
 <p>Using the constraints we came up with by analyzing the <code>spl_token::Account</code> struct, we can add to <code>create.rs</code>:</p>
 <pre><code class="language-rust noplayground">fn check_vault_account(
@@ -1278,7 +1289,7 @@ The altenative to this is related to the idea of <em>central state</em>, which c
 }
 </code></pre>
 <p>If the provided vault account is invalid, we return the custom <code>InvalidVaultAccount</code> error.
-Let's define it in <code>error.rs</code> by modifyin the <code>TokenVestingError</code> struct:</p>
+Let's define it in <code>error.rs</code> by modifying the <code>TokenVestingError</code> struct:</p>
 <pre><code class="language-rust noplayground">#[derive(Clone, Debug, Error, FromPrimitive)]
 pub enum TokenVestingError {
     #[error(&quot;This account is already initialized&quot;)]
@@ -1504,11 +1515,11 @@ fn check_vault_account(
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="writing-an-instruction-claim"><a class="header" href="#writing-an-instruction-claim">Writing an instruction: claim</a></h1>
 <p>The final instruction we need to write is <code>claim</code>.
-This instruction allows a vesting contract <em>owner</em> to claim there assets when those unvest.
+This instruction allows a vesting contract <em>owner</em> to claim their assets when those unvest.
 The design and implementation process will be mostly similar to the previous section.
 Therefore we'll go a bit faster here and slow down when there are interesting considerations to ponder.</p>
 <h2 id="adding-the-skeleton-for-a-new-instruction"><a class="header" href="#adding-the-skeleton-for-a-new-instruction">Adding the skeleton for a new instruction</a></h2>
-<p>We begin by duplicating the <code>create.rs</code> file, renaming it to <code>claim.rs</code>, declairing the module in <code>processor.rs</code> and wiping our <code>create.rs</code> business logic.
+<p>We begin by duplicating the <code>create.rs</code> file, renaming it to <code>claim.rs</code>, declaring the module in <code>processor.rs</code> and wiping our <code>create.rs</code> business logic.
 An alternative would have been to keep the example instruction and restart from there, but it doesn't make much of a difference.</p>
 <p>We won't be needing parameters here : we'll simply extract as many tokens as possible from the vesting contract.
 The <code>Params</code> struct will be empty but we'll use the casting logic anyways.
@@ -1591,7 +1602,7 @@ impl&lt;'a, 'b: 'a&gt; Accounts&lt;'a, AccountInfo&lt;'b&gt;&gt; {
     }
 }
 
-pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: &amp;Params) -&gt; ProgramResult {
+pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], _params: &amp;Params) -&gt; ProgramResult {
     let accounts = Accounts::parse(accounts, program_id)?;
 
     // We begin by parsing the vesting contract account
@@ -1682,6 +1693,7 @@ pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: &a
 
     Ok(())
 }
+
 </code></pre>
 <p>Once this is done, we need to add this instruction and its binding to the <code>instruction.rs</code> enum as well as <code>processor.rs</code>.</p>
 <p>In <code>instruction.rs</code>, we add the <code>Claim</code> variant to the <code>ProgramInstruction</code> enum. We also add the following binding:</p>

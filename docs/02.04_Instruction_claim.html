@@ -144,11 +144,11 @@
                     <main>
                         <h1 id="writing-an-instruction-claim"><a class="header" href="#writing-an-instruction-claim">Writing an instruction: claim</a></h1>
 <p>The final instruction we need to write is <code>claim</code>.
-This instruction allows a vesting contract <em>owner</em> to claim there assets when those unvest.
+This instruction allows a vesting contract <em>owner</em> to claim their assets when those unvest.
 The design and implementation process will be mostly similar to the previous section.
 Therefore we'll go a bit faster here and slow down when there are interesting considerations to ponder.</p>
 <h2 id="adding-the-skeleton-for-a-new-instruction"><a class="header" href="#adding-the-skeleton-for-a-new-instruction">Adding the skeleton for a new instruction</a></h2>
-<p>We begin by duplicating the <code>create.rs</code> file, renaming it to <code>claim.rs</code>, declairing the module in <code>processor.rs</code> and wiping our <code>create.rs</code> business logic.
+<p>We begin by duplicating the <code>create.rs</code> file, renaming it to <code>claim.rs</code>, declaring the module in <code>processor.rs</code> and wiping our <code>create.rs</code> business logic.
 An alternative would have been to keep the example instruction and restart from there, but it doesn't make much of a difference.</p>
 <p>We won't be needing parameters here : we'll simply extract as many tokens as possible from the vesting contract.
 The <code>Params</code> struct will be empty but we'll use the casting logic anyways.
@@ -231,7 +231,7 @@ impl&lt;'a, 'b: 'a&gt; Accounts&lt;'a, AccountInfo&lt;'b&gt;&gt; {
     }
 }
 
-pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: &amp;Params) -&gt; ProgramResult {
+pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], _params: &amp;Params) -&gt; ProgramResult {
     let accounts = Accounts::parse(accounts, program_id)?;
 
     // We begin by parsing the vesting contract account
@@ -322,6 +322,7 @@ pub fn process(program_id: &amp;Pubkey, accounts: &amp;[AccountInfo], params: &a
 
     Ok(())
 }
+
 </code></pre>
 <p>Once this is done, we need to add this instruction and its binding to the <code>instruction.rs</code> enum as well as <code>processor.rs</code>.</p>
 <p>In <code>instruction.rs</code>, we add the <code>Claim</code> variant to the <code>ProgramInstruction</code> enum. We also add the following binding:</p>

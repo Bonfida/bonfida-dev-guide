@@ -156,7 +156,8 @@ It needs to be owned by the <code>spl_token</code> program as well.</li>
 <li>The <code>source_tokens_owner</code> account, which we'll need as a signer to enable us to successfully transfer the tokens into our vault.</li>
 </ul>
 <p>The associated <code>Accounts</code> struct thus looks like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>#[derive(InstructionsAccount)]
 pub struct Accounts&lt;'a, T&gt; {
@@ -242,11 +243,11 @@ An attacker could substitute their own program here and leverage the <code>sourc
 <p>We're going to be editing the <code>vesting_contract</code> account data, and we need to be sure that <em>only our program</em> can alter this data.
 The Solana runtime constraints ensure that every byte of a program-owned account's data is either:</p>
 <ul>
-<li>determined by the program's logic</li>
-<li>freshly allocated and therefore 0
-This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
-Failing to perform this check will expose our programs to all sorts of potential attacks.</li>
+<li>determined by the program's logic.</li>
+<li>freshly allocated and therefore 0.</li>
 </ul>
+<p>This means that, as long as we trust our own program (which isn't a given considering our own program might be buggy), we should be able to trust the data that's held by its owned accounts.
+Failing to perform this check will expose our programs to all sorts of potential attacks.</p>
 <p>In reality our program's logic should already make this check redundant: the <code>VestingContract::initialize</code> method will either attempt to modify the account's data (which is only possible when it is owned by the current program), or just fail.
 Does this mean we should remove this check?
 <em>Absolutely not.</em>

@@ -157,7 +157,7 @@ This approach has several advantages:</p>
 <ul>
 <li>Packed representation: this representation is quite space-efficient.</li>
 <li>Easier to write bindings in languages other than Rust.</li>
-<li>No constraint on memory alignment and padding</li>
+<li>No constraint on memory alignment and padding.</li>
 </ul>
 <p>The main disadvantage posed by Borsh is that the serialization and deserialization operations have to iterate through the entire data slice, and perform copy operations.
 This means that this approach is impractical for larger data structures and can consume a substantial amount of the available compute budget.</p>
@@ -175,7 +175,7 @@ This is an extremely error-prone approach.</p>
 <li>Certain types have to be aligned to particular offsets.</li>
 <li>Object sizes must be a multiple of their own alignment constraint.</li>
 </ul>
-<p>While working with theses kinds of abstract constraints can seem quite daunting, <code>bytemuck</code> provides us with convenient derive macros which are able to detect these issues before compilation. By looking at an example, we'll see how these constraints come into play, and how we can deal with them.</p>
+<p>While working with these kinds of abstract constraints can seem quite daunting, <code>bytemuck</code> provides us with convenient derive macros which are able to detect these issues before compilation. By looking at an example, we'll see how these constraints come into play, and how we can deal with them.</p>
 <p>Finally, once our data structure is well-defined to play along with <code>bytemuck</code>, we can write a compatible <code>borsh</code> schema to leverage its implementations across various programming languages.</p>
 
                     </main>

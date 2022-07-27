@@ -148,11 +148,11 @@ The next step is to write our program's one of two main primitives: <code>create
 <p>We'll start by renaming the <code>src/processor/example_instr.rs</code> file to <code>create.rs</code>.
 Similarly we'll rename the <code>ExampleInstr</code> variant of the <code>instruction::ProgramInstruction</code> enum to <code>Create</code>, and the <code>instruction::example</code> binding to <code>create</code>.
 We should also alter the log message in <code>processor.rs</code> from <code>&quot;Instruction: Example Instruction&quot;</code> to <code>&quot;Instruction: Create&quot;</code>, and update the instruction comment at the top of <code>create.rs</code> to <code>//! Create a new token vesting contract</code>.</p>
-<p>This primtive will perform several operations:</p>
+<p>This primitive will perform several operations:</p>
 <ul>
-<li>Initialize a new <code>VestingContract</code> account/object</li>
-<li>Configure the <code>VestingContract</code> with user-provided parameters</li>
-<li>Transfer funds into the program vault</li>
+<li>Initialize a new <code>VestingContract</code> account/object.</li>
+<li>Configure the <code>VestingContract</code> with user-provided parameters.</li>
+<li>Transfer funds into the program vault.</li>
 </ul>
 <p>An instruction's specification is defined by its <code>Accounts</code> and <code>Params</code> objects. Let's start by thinking about what kinds of accounts we'll need, and then we'll take a look at the associated parameters.</p>
 

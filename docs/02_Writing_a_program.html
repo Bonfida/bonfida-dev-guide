@@ -164,7 +164,8 @@ In order to hold the vested assets, each token vesting contract has an associate
 A vault is a normal token account which is owned by an associated <em>PDA</em>, more on that later.</p>
 <p>Each vesting contract will thus have an associated state account owned by our program.
 These accounts will hold a serialized version of a <code>VestingContract</code> object:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct VestingContract {
     /// The eventual token receiver
@@ -188,7 +189,8 @@ pub struct VestingSchedule {
 <span class="boring">}
 </span></code></pre></pre>
 <p>In reality, we will define the <code>VestingContract</code> object quite differently in order to greatly optimize its on-chain serialization and deserialization. This will allow us to handle arbitrarily complex vesting schedules while never running out of compute budget. Thus, the actual <code>VestingContract</code> object will be defined in the following way:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub struct VestingContract&lt;'a&gt; {
     pub header: &amp;'a mut VestingContractHeader,

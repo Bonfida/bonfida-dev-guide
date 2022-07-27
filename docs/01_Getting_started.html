@@ -163,8 +163,8 @@ cd my-project
 </code></pre>
 <ul>
 <li>The <code>js</code> folder is used to build JavaScript bindings for the current project.</li>
-<li>The <code>program</code> folder contains the on-chain Solana program</li>
-<li>The <code>python</code> folder contains Python bindings</li>
+<li>The <code>program</code> folder contains the on-chain Solana program.</li>
+<li>The <code>python</code> folder contains Python bindings.</li>
 </ul>
 <h3 id="the-program"><a class="header" href="#the-program">The program</a></h3>
 <p>The summary below describes the basic structure of the program's files, as well as their individual purpose.</p>
@@ -172,7 +172,7 @@ cd my-project
 ├── Cargo.toml                       
 ├── src                              
 │   ├── cpi.rs                       
-│   ├── entrypoint.rs                # Boilerplate for the solana program's entrypoint
+│   ├── entrypoint.rs                # Boilerplate for the Solana program's entrypoint
 |   |
 │   ├── error.rs                     # Custom errors for the program. Varied and 
 |   |                                  descriptive errors should be preferred!
@@ -192,7 +192,7 @@ cd my-project
 |   |                                  follows a strict template to optimize ease of 
 |   |                                  audit and general readability.
 |   |
-│   ├── processor.rs                 # The processor itelf is a dispatcher for all 
+│   ├── processor.rs                 # The processor itself is a dispatcher for all 
 |   |                                  instructions. The program entrypoint directly 
 |   |                                  calls the processor.
 |   |
