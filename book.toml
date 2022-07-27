@@ -7,3 +7,6 @@ title = "The Bonfida Development Guide"
 
 [build]
 build-dir = "output"
+
+[output.html]
+cname = "utils.bonfida.org"
