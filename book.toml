@@ -6,7 +6,8 @@ src = "src"
 title = "The Bonfida Development Guide"
 
 [build]
-build-dir = "output"
+build-dir = "docs"
 
 [output.html]
 cname = "utils.bonfida.org"
+git-repository-url = "https://github.com/Bonfida/bonfida-dev-guide/"

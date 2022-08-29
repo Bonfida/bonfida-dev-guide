@@ -13,3 +13,7 @@ Our approach is based on several key principles:
 
 This book is intended as a guide to what we have come to define internally as the _Bonfida style_.
 As we learn new and better ways to write programs, it will necessarily evolve.
+
+## Feedback
+
+If you notice a mistake in this book, or if you would like something to get clarified, please do not hesitate to open an issue on the guide's [repo](https://github.com/Bonfida/bonfida-dev-guide/).

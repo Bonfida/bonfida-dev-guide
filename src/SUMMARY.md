@@ -18,7 +18,7 @@
             - [Checks on third-party state](02.03.04.03_Implementing_checks_on_third-party_state.md)
         - [Conclusion](02.03.05_Conclusion.md)
     - [Writing an instruction: `claim`](02.04_Instruction_claim.md)
-    - [Setting up integration testing]()
+    - [Setting up integration testing](02.05_Integration_testing.md)
 - [Examples]()
 - [FAQ]()
 
